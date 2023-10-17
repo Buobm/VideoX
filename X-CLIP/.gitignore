@@ -164,3 +164,4 @@ cython_debug/
 # Big data files
 checkpoints/
 output/
+X-CLIP_env/

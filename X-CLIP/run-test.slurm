@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#SBATCH -n 4
-#SBATCH --gpus=1
+#SBATCH -n 1
 #SBATCH --time=8:00
 #SBATCH --mem-per-cpu=2000
 #SBATCH --tmp=4000                        # per node!!
@@ -16,12 +15,5 @@ module load python_gpu/3.7.4 #also just loads "cuda" and "cudnn"
 
 source X-CLIP_env/bin/activate
 
-echo "GPUs allocated by SLURM: ${CUDA_VISIBLE_DEVICES:-None}"
-
 #launch test run of X-CLIP
-python -m torch.distributed.launch --nproc_per_node=1 main.py \
--cfg configs/k400/32_8.yaml \
---output /home/mischa/ETH/semester_project/VideoX/X-CLIP/output \
---only_test \
---resume checkpoints/k400_32_8.pth \
---opts TEST.NUM_CLIP 4 TEST.NUM_CROP 3
+python test.py
