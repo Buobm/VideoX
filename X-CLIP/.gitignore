@@ -165,3 +165,7 @@ cython_debug/
 checkpoints/
 output/
 X-CLIP_env/
+
+# Output and error files
+*.err
+*.out

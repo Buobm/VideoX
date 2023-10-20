@@ -37,7 +37,7 @@ def parse_option():
     parser.add_argument('--batch-size', type=int)
     parser.add_argument('--accumulation-steps', type=int)
 
-    parser.add_argument("--local_rank", type=int, default=-1, help='local rank for DistributedDataParallel')
+    parser.add_argument("--local_rank", type=int, default= int(os.environ['LOCAL_RANK']), help='local rank for DistributedDataParallel')
     args = parser.parse_args()
 
     config = get_config(args)
@@ -242,6 +242,7 @@ def validate(val_loader, text_labels, model, config):
 
 
 if __name__ == '__main__':
+    print("Starting X-CLIP")
     # prepare config
     args, config = parse_option()
 
