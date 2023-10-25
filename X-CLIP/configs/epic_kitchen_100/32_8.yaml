@@ -1,0 +1,13 @@
+DATA:
+    ROOT: '/home/mischa/EPIC-KITCHENS/P01/videos/'
+    TRAIN_FILE: 'epic_kitchen_100/top_100_classes/top_100_filtered_test_reduced.txt'
+    VAL_FILE: 'epic_kitchen_100/top_100_classes/top_100_filtered_test_reduced.txt'
+    DATASET: epic_kitchen_100
+    NUM_FRAMES: 8
+    NUM_CLASSES: 100
+    LABEL_LIST: 'epic_kitchen_100/top_100_classes/top_100_class_mapping.csv'
+MODEL:
+    ARCH: ViT-B/32
+TRAIN:
+    BATCH_SIZE: 4
+    ACCUMULATION_STEPS: 1

@@ -182,26 +182,59 @@ class VideoDataset(BaseDataset):
     def classes(self):
         classes_all = pd.read_csv(self.labels_file)
         return classes_all.values.tolist()
+    
+    def timestamp_to_seconds(self, timestamp):
+        """Convert timestamp (HH:MM:SS.ms) to seconds."""
+        h, m, s = map(float, timestamp.split(':'))
+        return h * 3600 + m * 60 + s
+    
+    def has_timestamp_format(self, value):
+        """Check if the given value is in the HH:MM:SS.ms format."""
+        parts = value.split(':')
+        if len(parts) != 3:
+            return False
+        try:
+            h, m, s = map(float, parts)
+            return True
+        except ValueError:
+            return False
 
     def load_annotations(self):
         """Load annotation file to get video information."""
-        if self.ann_file.endswith('.json'):
-            return self.load_json_annotations()
-
         video_infos = []
+
         with open(self.ann_file, 'r') as fin:
             for line in fin:
                 line_split = line.strip().split()
-                if self.multi_class:
-                    assert self.num_classes is not None
-                    filename, label = line_split[0], line_split[1:]
-                    label = list(map(int, label))
-                else:
-                    filename, label = line_split
-                    label = int(label)
-                if self.data_prefix is not None:
-                    filename = osp.join(self.data_prefix, filename)
-                video_infos.append(dict(filename=filename, label=label, tar=self.use_tar_format))
+
+                # Check if the annotation contains timestamps by checking the HH:MM:SS.ms format
+                if len(line_split) >= 4 and self.has_timestamp_format(line_split[1]) and self.has_timestamp_format(line_split[2]):
+                    filename, start_timestamp, end_timestamp, *label_data = line_split
+                    start_timestamp, end_timestamp = self.timestamp_to_seconds(start_timestamp), self.timestamp_to_seconds(end_timestamp)
+
+                    if self.multi_class:
+                        label = list(map(int, label_data))
+                    else:
+                        label = int(label_data[0])
+
+                    if self.data_prefix is not None:
+                        filename = osp.join(self.data_prefix, filename)
+                    video_infos.append(dict(filename=filename, start_timestamp=start_timestamp, end_timestamp=end_timestamp, label=label, tar=self.use_tar_format))
+                    
+                else:  # Existing format
+                    filename = line_split[0]
+                    label_data = line_split[1:]
+
+                    if self.multi_class:
+                        assert self.num_classes is not None
+                        label = list(map(int, label_data))
+                    else:
+                        label = int(label_data[0])
+
+                    if self.data_prefix is not None:
+                        filename = osp.join(self.data_prefix, filename)
+                    video_infos.append(dict(filename=filename, label=label, tar=self.use_tar_format))
+
         return video_infos
 
 
@@ -246,6 +279,7 @@ def build_dataloader(logger, config):
 
     train_pipeline = [
         dict(type='DecordInit'),
+        dict(type='VideoClip'),
         dict(type='SampleFrames', clip_len=1, frame_interval=1, num_clips=config.DATA.NUM_FRAMES),
         dict(type='DecordDecode'),
         dict(type='Resize', scale=(-1, scale_resize)),
@@ -267,7 +301,7 @@ def build_dataloader(logger, config):
         
     
     train_data = VideoDataset(ann_file=config.DATA.TRAIN_FILE, data_prefix=config.DATA.ROOT,
-                              labels_file=config.DATA.LABEL_LIST, pipeline=train_pipeline)
+                              labels_file=config.DATA.LABEL_LIST, pipeline=train_pipeline, num_classes=config.DATA.NUM_CLASSES, multi_class=config.DATA.MULTI_CLASS)
     num_tasks = dist.get_world_size()
     global_rank = dist.get_rank()
     sampler_train = torch.utils.data.DistributedSampler(
@@ -284,6 +318,7 @@ def build_dataloader(logger, config):
     
     val_pipeline = [
         dict(type='DecordInit'),
+        dict(type='VideoClip'),
         dict(type='SampleFrames', clip_len=1, frame_interval=1, num_clips=config.DATA.NUM_FRAMES, test_mode=True),
         dict(type='DecordDecode'),
         dict(type='Resize', scale=(-1, scale_resize)),
@@ -294,12 +329,12 @@ def build_dataloader(logger, config):
         dict(type='ToTensor', keys=['imgs'])
     ]
     if config.TEST.NUM_CROP == 3:
-        val_pipeline[3] = dict(type='Resize', scale=(-1, config.DATA.INPUT_SIZE))
-        val_pipeline[4] = dict(type='ThreeCrop', crop_size=config.DATA.INPUT_SIZE)
+        val_pipeline[4] = dict(type='Resize', scale=(-1, config.DATA.INPUT_SIZE))
+        val_pipeline[5] = dict(type='ThreeCrop', crop_size=config.DATA.INPUT_SIZE)
     if config.TEST.NUM_CLIP > 1:
-        val_pipeline[1] = dict(type='SampleFrames', clip_len=1, frame_interval=1, num_clips=config.DATA.NUM_FRAMES, multiview=config.TEST.NUM_CLIP)
+        val_pipeline[2] = dict(type='SampleFrames', clip_len=1, frame_interval=1, num_clips=config.DATA.NUM_FRAMES, multiview=config.TEST.NUM_CLIP)
     
-    val_data = VideoDataset(ann_file=config.DATA.VAL_FILE, data_prefix=config.DATA.ROOT, labels_file=config.DATA.LABEL_LIST, pipeline=val_pipeline)
+    val_data = VideoDataset(ann_file=config.DATA.VAL_FILE, data_prefix=config.DATA.ROOT, labels_file=config.DATA.LABEL_LIST, pipeline=val_pipeline, num_classes=config.DATA.NUM_CLASSES, multi_class=config.DATA.MULTI_CLASS)
     indices = np.arange(dist.get_rank(), len(val_data), dist.get_world_size())
     sampler_val = SubsetRandomSampler(indices)
     val_loader = DataLoader(
