@@ -126,7 +126,8 @@ def main(config):
     train_data, val_data, train_loader, val_loader = build_dataloader(logger, config)
     acc1 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch= config.TRAIN.EPOCHS + 1)
     logger.info(f"Accuracy of the network on the {len(val_data)} test videos: {acc1:.1f}%")
-
+    parameters, metric = get_hparams(config,acc1)
+    writer.add_hparams(parameters, metric)
 
 def train_one_epoch(epoch, model, criterion, optimizer, lr_scheduler, train_loader, text_labels, config, mixup_fn):
     model.train()

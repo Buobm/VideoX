@@ -35,8 +35,11 @@ class ClassificationMetricsLogger:
         self.FN.zero_()
 
 def add_imagages_to_tensorboard(writer, image, image_number, epoch, name):
+    # only take one view
+    if image.ndim == 6:
+        image = image[:, 0, :, :, :, :]
     frame_img = image[image_number].squeeze(0)[0].cuda()  # Averaging [C, H, W]
-    
+
     # Denormalize
     mean, std = torch.Tensor(img_norm_cfg['mean']).view(3, 1, 1).cuda(), torch.Tensor(img_norm_cfg['std']).view(3, 1, 1).cuda()
     frame_img.mul_(std).add_(mean)  # In-place denormalization
@@ -46,7 +49,7 @@ def add_imagages_to_tensorboard(writer, image, image_number, epoch, name):
     frame_img = torch.clamp(frame_img, 0, 1)
     # Move tensor to CPU and add to TensorBoard
     denorm_img = frame_img.cpu()
-    writer.add_image(name, denorm_img)
+    writer.add_image(name, denorm_img, epoch)
 
 
 def get_hparams(config, max_accuracy):
@@ -59,6 +62,9 @@ def get_hparams(config, max_accuracy):
         'RESUME': config.MODEL.RESUME,
         'NUM_FRAMES': config.DATA.NUM_FRAMES,
         'NUM_CLASSES': config.DATA.NUM_CLASSES,
+        'NUM_CROPS': config.TEST.NUM_CROP,
+        'NUM_CLIPS': config.TEST.NUM_CLIP,
+        'NUM_VIEWS': config.TEST.NUM_CROP * config.TEST.NUM_CLIP,
         'DATASET': config.DATA.DATASET,
         'ONLY_TEST': config.TEST.ONLY_TEST,
         'EPOCHS': config.TRAIN.EPOCHS,
