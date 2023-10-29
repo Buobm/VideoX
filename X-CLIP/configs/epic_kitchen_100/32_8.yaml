@@ -1,13 +1,20 @@
 DATA:
-    ROOT: '/home/mischa/EPIC-KITCHENS/P01/videos/'
-    TRAIN_FILE: 'epic_kitchen_100/top_100_classes/top_100_filtered_test_reduced.txt'
-    VAL_FILE: 'epic_kitchen_100/top_100_classes/top_100_filtered_test_reduced.txt'
+    ROOT: '/home/mischa/ETH/semester_project/Datasets/Epic-Kitchen/videos'
+    TRAIN_FILE: 'epic_kitchen_100/top_200_classes/top_200_filtered_train_reduced.txt'
+    VAL_FILE: 'epic_kitchen_100/top_200_classes/top_200_filtered_train_reduced.txt'
     DATASET: epic_kitchen_100
     NUM_FRAMES: 8
-    NUM_CLASSES: 100
-    LABEL_LIST: 'epic_kitchen_100/top_100_classes/top_100_class_mapping.csv'
+    NUM_CLASSES: 200
+    LABEL_LIST: 'epic_kitchen_100/top_200_classes/top_200_class_mapping.csv'
 MODEL:
     ARCH: ViT-B/32
 TRAIN:
-    BATCH_SIZE: 4
-    ACCUMULATION_STEPS: 1
+    EPOCHS: 8
+    WARMUP_EPOCHS: 5
+    WEIGHT_DECAY: 0.001
+    LR: 2.e-6
+    BATCH_SIZE: 8
+    ACCUMULATION_STEPS: 4
+    LR_SCHEDULER: 'cosine'
+    OPTIMIZER: 'adamw'
+    OPT_LEVEL: 'O1'
