@@ -10,8 +10,11 @@ from pathlib import Path
 from utils.config import get_config
 from utils.optimizer import build_optimizer, build_scheduler
 from utils.tools import AverageMeter, reduce_tensor, epoch_saving, load_checkpoint, generate_text, auto_resume_helper
-from datasets.build import build_dataloader
+from datasets.build import build_dataloader, img_norm_cfg
 from utils.logger import create_logger
+from utils.tensorboard_utils import ClassificationMetricsLogger, get_hparams, add_imagages_to_tensorboard
+from torchvision.utils import make_grid
+from torch.utils.tensorboard import SummaryWriter
 import time
 import numpy as np
 import random
@@ -20,6 +23,9 @@ from timm.loss import LabelSmoothingCrossEntropy, SoftTargetCrossEntropy
 from datasets.blending import CutmixMixupBlending
 from utils.config import get_config
 from models import xclip
+
+
+
 
 def parse_option():
     parser = argparse.ArgumentParser()
@@ -93,17 +99,19 @@ def main(config):
 
 
     text_labels = generate_text(train_data)
-    
+
     if config.TEST.ONLY_TEST:
-        acc1 = validate(val_loader, text_labels, model, config)
+        acc1 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch=0)
         logger.info(f"Accuracy of the network on the {len(val_data)} test videos: {acc1:.1f}%")
+        parameters, metric = get_hparams(config,acc1)
+        writer.add_hparams(parameters, metric)
         return
 
     for epoch in range(start_epoch, config.TRAIN.EPOCHS):
         train_loader.sampler.set_epoch(epoch)
         train_one_epoch(epoch, model, criterion, optimizer, lr_scheduler, train_loader, text_labels, config, mixup_fn)
 
-        acc1 = validate(val_loader, text_labels, model, config)
+        acc1 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch=epoch)
         logger.info(f"Accuracy of the network on the {len(val_data)} test videos: {acc1:.1f}%")
         is_best = acc1 > max_accuracy
         max_accuracy = max(max_accuracy, acc1)
@@ -116,9 +124,10 @@ def main(config):
     config.TEST.NUM_CROP = 3
     config.freeze()
     train_data, val_data, train_loader, val_loader = build_dataloader(logger, config)
-    acc1 = validate(val_loader, text_labels, model, config)
+    acc1 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch= config.TRAIN.EPOCHS + 1)
     logger.info(f"Accuracy of the network on the {len(val_data)} test videos: {acc1:.1f}%")
-
+    parameters, metric = get_hparams(config,acc1)
+    writer.add_hparams(parameters, metric)
 
 def train_one_epoch(epoch, model, criterion, optimizer, lr_scheduler, train_loader, text_labels, config, mixup_fn):
     model.train()
@@ -183,15 +192,19 @@ def train_one_epoch(epoch, model, criterion, optimizer, lr_scheduler, train_load
                 f'time {batch_time.val:.4f} ({batch_time.avg:.4f})\t'
                 f'tot_loss {tot_loss_meter.val:.4f} ({tot_loss_meter.avg:.4f})\t'
                 f'mem {memory_used:.0f}MB')
+            writer.add_scalar('Train/Learning Rate', lr, epoch * num_steps + idx)
+            writer.add_scalar('Train/Total Loss', tot_loss_meter.avg, epoch * num_steps + idx)
     epoch_time = time.time() - start
     logger.info(f"EPOCH {epoch} training takes {datetime.timedelta(seconds=int(epoch_time))}")
 
-
 @torch.no_grad()
-def validate(val_loader, text_labels, model, config):
+def validate(val_loader, text_labels, model, config, train_data, epoch=0 ):
     model.eval()
     
     acc1_meter, acc5_meter = AverageMeter(), AverageMeter()
+    # Initialize the classification logger
+    metrics_logger = ClassificationMetricsLogger(num_classes=config.DATA.NUM_CLASSES)
+
     with torch.no_grad():
         text_inputs = text_labels.cuda()
         logger.info(f"{config.TEST.NUM_CLIP * config.TEST.NUM_CROP} views inference")
@@ -225,8 +238,14 @@ def validate(val_loader, text_labels, model, config):
             for i in range(b):
                 if indices_1[i] == label_id[i]:
                     acc1 += 1
+                elif (config.TEST.ONLY_TEST or epoch == config.TRAIN.EPOCHS + 1) and random.random() < 0.1:
+                    # Add 10% of the wrongly classified images to TensorBoard
+                    # only in last epoch or when testing
+                    add_imagages_to_tensorboard(writer, _image, i, epoch, f'Wrongly_Classified/{label_id[i]}')
                 if label_id[i] in indices_5[i]:
                     acc5 += 1
+            # Update TP, FP, FN 
+            metrics_logger.update(indices_1, label_id)
            
             acc1_meter.update(float(acc1) / b * 100, b)
             acc5_meter.update(float(acc5) / b * 100, b)
@@ -238,8 +257,11 @@ def validate(val_loader, text_labels, model, config):
     acc1_meter.sync()
     acc5_meter.sync()
     logger.info(f' * Acc@1 {acc1_meter.avg:.3f} Acc@5 {acc5_meter.avg:.3f}')
+    writer.add_scalar('Validation/Accuracy@1', acc1_meter.avg, epoch)
+    writer.add_scalar('Validation/Accuracy@5', acc5_meter.avg, epoch)
+    metrics_logger.write_to_tensorboard(writer, epoch)
+    metrics_logger.reset()
     return acc1_meter.avg
-
 
 if __name__ == '__main__':
     print("Starting X-CLIP")
@@ -270,6 +292,9 @@ if __name__ == '__main__':
     # logger
     logger = create_logger(output_dir=config.OUTPUT, dist_rank=dist.get_rank(), name=f"{config.MODEL.ARCH}")
     logger.info(f"working dir: {config.OUTPUT}")
+    global writer
+    current_date = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    writer = SummaryWriter(log_dir=config.OUTPUT + '/tensorboard/' +"run_"+ current_date)
     
     # save config 
     if dist.get_rank() == 0:
@@ -277,3 +302,4 @@ if __name__ == '__main__':
         shutil.copy(args.config, config.OUTPUT)
 
     main(config)
+    writer.close()

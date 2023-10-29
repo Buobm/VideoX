@@ -1825,34 +1825,53 @@ class DecordDecode:
     """
 
     def __call__(self, results):
-        """Perform the Decord decoding.
+        if 'frames' in results:
+            imgs = results['frames']
+            #get frames at frame_inds
+            imgs = [imgs[idx] for idx in results['frame_inds']]
 
-        Args:
-            results (dict): The resulting dict to be modified and passed
-                to the next transform in pipeline.
-        """
-        container = results['video_reader']
-
-        if results['frame_inds'].ndim != 1:
-            results['frame_inds'] = np.squeeze(results['frame_inds'])
-
-        frame_inds = results['frame_inds']
-        # Generate frame index mapping in order
-        frame_dict = {
-            idx: container[idx].asnumpy()
-            for idx in np.unique(frame_inds)
-        }
-
-        imgs = [frame_dict[idx] for idx in frame_inds]
-
-        results['video_reader'] = None
-        del container
+        else:
+            container = results['video_reader']
+            frame_inds = results['frame_inds']
+            frame_dict = {
+                idx: container[idx].asnumpy()
+                for idx in np.unique(frame_inds)
+            }
+            imgs = [frame_dict[idx] for idx in frame_inds]
+            results['video_reader'] = None
+            del container
 
         results['imgs'] = imgs
         results['original_shape'] = imgs[0].shape[:2]
         results['img_shape'] = imgs[0].shape[:2]
+        
+        return results
+    
+@PIPELINES.register_module()
+class VideoClip:
+    """Sample frames from the video if a timestamp is provided."""
+    def __call__(self, results):
+        start_timestamp = results.get('start_timestamp', None)
+        end_timestamp = results.get('end_timestamp', None)
+        
+        if start_timestamp is not None and end_timestamp is not None:
+            vr = results['video_reader']  # Get the video_reader
+            fps = vr.get_avg_fps()
+
+            start_frame = int(np.floor(start_timestamp * fps))
+            end_frame = int(np.floor(end_timestamp * fps))
+
+            # Directly read only the required frames
+            frames = [vr[idx].asnumpy() for idx in range(start_frame, end_frame + 1)]
+            
+            results['video_reader'] = None  # Clear the original video reader to save memory
+            del vr  # Explicitly delete to possibly free up memory sooner
+
+            results['total_frames'] = len(frames)
+            results['frames'] = frames  # Store the frames as a new key in the dictionary
 
         return results
+
 
 @PIPELINES.register_module()
 class SampleFrames:

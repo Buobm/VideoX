@@ -7,9 +7,9 @@
             "request": "launch",
             "program": "${workspaceFolder}/main.py",
             "args": [
-                "-cfg", "configs/k400/32_8.yaml",
+                "-cfg", "configs/epic_kitchen_100/32_8.yaml",
                 "--output", "/home/mischa/ETH/semester_project/VideoX/X-CLIP/output",
-                "--only_test", "--local_rank", "0",
+                "--only_test",
                 "--resume", "checkpoints/k400_32_8.pth",
                 "--opts", "TEST.NUM_CLIP", "4", "TEST.NUM_CROP", "3"
             ],
@@ -17,7 +17,8 @@
                 "MASTER_ADDR": "localhost",
                 "MASTER_PORT": "29500",
                 "WORLD_SIZE": "1",
-                "RANK": "0"
+                "RANK": "0",
+                "LOCAL_RANK": "0"
             },
             "preLaunchTask": "torch_distributed_launch"
         }

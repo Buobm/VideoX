@@ -1,0 +1,101 @@
+id,name
+0,take plate
+1,put down plate
+10,turn on tap
+11,wash sink
+12,open bin
+13,turn off tap
+15,put down cloth
+17,close bin
+18,dry hands
+33,open bag
+38,open fridge
+42,close fridge
+43,take spatula
+57,take knife
+58,put down knife
+60,put down lid
+62,take sponge
+63,squeeze sponge
+66,wash knife
+67,take fork
+68,wash fork
+69,put down fork
+75,wash plate
+77,put down spatula
+79,put down sponge
+81,wash glass
+82,rinse glass
+100,rinse plate
+104,open drawer
+105,close drawer
+107,open cupboard
+110,take pan
+115,close cupboard
+124,put down spoon
+128,take spoon
+130,put down container
+147,rinse spoon
+150,put down cup
+151,put down glass
+171,put down pan
+173,put down cutting board
+183,cut onion
+196,put down bottle
+202,stir food
+231,stir pasta
+265,wash hands
+266,close tap
+277,take bowl
+278,put down bowl
+298,turn on hob
+309,move pan
+312,rinse knife
+330,wash pan
+336,rinse hands
+342,rinse pan
+343,rinse sponge
+360,wash spoon
+397,put spoon
+407,pick up spoon
+427,pick up plate
+459,put plate
+478,open tap
+495,open oven
+498,close oven
+502,pick up meat
+515,pick up pan
+530,pick up bowl
+543,pick up lid
+564,pick up glass
+573,pick up bag
+649,move tap
+761,pour water
+765,stir pan
+789,peel onion
+794,pick up chopping board
+816,pick up container
+862,pick up fork
+871,clean sink
+1041,open dishwasher
+1044,pick up knife
+1150,pick up cup
+1188,open lid
+1258,close lid
+1501,open cabinet
+1718,pick up pot
+1727,pick up colander
+1799,pick up sponge
+1899,pick up mug
+2023,pick up salt
+2256,rinse bowl
+2532,pick up spatula
+2672,shake hands
+2711,put knife
+2770,pick up cloth
+2771,rinse cloth
+2829,pick up bottle
+2830,pick up cutlery
+3004,open door
+3086,close door
+3361,wipe surface
