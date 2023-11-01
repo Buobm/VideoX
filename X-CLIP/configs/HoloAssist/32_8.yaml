@@ -1,0 +1,21 @@
+DATA:
+    ROOT: '/home/mischa/ETH/semester_project/Datasets/HoloAssist/videos'
+    TRAIN_FILE: 'HoloAssist/10_samples/train_data.txt'
+    VAL_FILE: 'HoloAssist/10_samples/val_data.txt'
+    DATASET: HoloAssist_min_10_samples
+    NUM_FRAMES: 8
+    NUM_CLASSES: 93
+    LABEL_LIST: 'HoloAssist/10_samples/holoassist_labels.csv'
+MODEL:
+    ARCH: ViT-B/32
+    FIX_TEXT: True
+TRAIN:
+    EPOCHS: 50
+    WARMUP_EPOCHS: 2
+    WEIGHT_DECAY: 0.001
+    LR: 2.e-6
+    BATCH_SIZE: 8
+    ACCUMULATION_STEPS: 2
+    LR_SCHEDULER: 'cosine'
+    OPTIMIZER: 'adamw'
+    OPT_LEVEL: 'O1'
