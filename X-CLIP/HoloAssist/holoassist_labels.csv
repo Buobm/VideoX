@@ -1,0 +1,97 @@
+id,name
+0,approach water container
+1,open lid
+2,withdraw water container
+3,lift water container
+4,approach faucet
+5,open faucet
+6,load water container
+7,close lid
+8,place water container
+9,rotate capsule coffee machine
+10,grab water container
+11,pull water container
+12,align water container
+13,place cup
+14,approach capsule coffee machine
+15,pull lever
+16,open capsule box
+17,lift coffee capsule
+18,insert coffee capsule
+19,grab dispenser
+20,push lever
+21,grab cup
+22,approach button
+23,press button
+24,approach cup
+25,lift cup
+26,grab drip tray
+27,grab capsule coffee machine
+28,withdraw drip tray
+29,disassemble capsule container
+30,lift capsule container
+31,approach garbage bin
+32,open garbage bin
+33,empty capsule container
+34,lift drip tray
+35,assemble capsule container
+36,assemble drip tray
+37,pull drip tray
+38,grab capsule container
+39,flip drip tray
+40,empty drip tray
+41,place drip tray
+42,insert drip tray
+43,approach lever
+44,grab lever
+45,slide capsule coffee machine
+46,close faucet
+47,lift lever
+48,approach coffee capsule
+49,grab coffee capsule
+50,withdraw cup
+51,close garbage bin
+52,approach drip tray
+53,disassemble drip tray
+54,lift lid
+55,load cup
+56,approach capsule container
+57,drop coffee capsule
+58,withdraw capsule container
+59,approach sink
+60,assemble water container
+61,rotate coffee capsule
+62,align cup
+63,load coffee
+64,rotate drip tray
+65,hold capsule container
+66,place capsule container
+67,insert capsule container
+68,hold cup
+69,hold lever
+70,pour water
+71,insert water container
+72,close water container
+73,lift tray
+74,place coffee capsule
+75,touch capsule coffee machine
+76,approach espresso machine
+77,grab lid
+78,grab glass
+79,close lever
+80,hold drip tray
+81,drop drip tray
+82,grab espresso machine
+83,rotate espresso machine
+84,inspect drip tray
+85,pull capsule container
+86,open water container
+87,hold water container
+88,push button
+89,slide cup
+90,inspect capsule coffee machine
+91,push drip tray
+92,empty tray
+93,insert tray
+94,grab tray
+95,pull handle

@@ -1,77 +1,78 @@
-id,name
-1,take plate
-2,put down plate
-3,take cloth
-4,wipe counter
-5,turn on tap
-6,wash sink
-7,open bin
-8,turn off tap
-9,put down cloth
-10,close bin
-11,dry hands
-12,close bag
-13,open bag
-14,take lid
-15,close container
-16,open fridge
-17,close fridge
-18,take spatula
-19,take container
-20,open container
-21,take knife
-22,put down knife
-23,put down lid
-24,take sponge
-25,squeeze sponge
-26,put down washing up liquid
-27,wash knife
-28,take fork
-29,wash fork
-30,put down fork
-31,wash plate
-32,put down spatula
-33,put down sponge
-34,take glass
-35,wash glass
-36,rinse glass
-37,rinse plate
-38,open drawer
-39,close drawer
-40,open cupboard
-41,take pan
-42,close cupboard
-43,put down spoon
-44,take spoon
-45,put down container
-46,rinse spoon
-47,rinse cup
-48,put down cup
-49,put down glass
-50,take bottle
-51,take kettle
-52,put down kettle
-53,turn on kettle
-54,put down colander
-55,put down pan
-56,put down cutting board
-57,put down aubergine
-58,take salt
-59,pour salt
-60,put down salt
-61,cut onion
-62,chop onion
-63,open bottle
-64,put down bottle
-65,adjust hob
-66,stir food
-67,continue stirring food
-68,put down plates
-69,put down cutlery
-70,stir pasta
-71,turn off hob
-72,put down saucepan
-73,take saucepan
+new_id,name
+0,take plate
+1,put down plate
+2,take cloth
+3,wipe counter
+4,turn on tap
+5,wash sink
+6,open bin
+7,turn off tap
+8,put down cloth
+9,close bin
+10,dry hands
+11,close bag
+12,open bag
+13,take lid
+14,close container
+15,open fridge
+16,close fridge
+17,take spatula
+18,take container
+19,open container
+20,take knife
+21,put down knife
+22,put down lid
+23,take sponge
+24,squeeze sponge
+25,put down washing up liquid
+26,wash knife
+27,take fork
+28,wash fork
+29,put down fork
+30,wash plate
+31,put down spatula
+32,put down sponge
+33,take glass
+34,wash glass
+35,rinse glass
+36,rinse plate
+37,open drawer
+38,close drawer
+39,open cupboard
+40,take pan
+41,close cupboard
+42,put down spoon
+43,take spoon
+44,put down container
+45,rinse spoon
+46,rinse cup
+47,put down cup
+48,put down glass
+49,take bottle
+50,take kettle
+51,put down kettle
+52,turn on kettle
+53,put down colander
+54,put down pan
+55,put down cutting board
+56,put down aubergine
+57,take salt
+58,pour salt
+59,put down salt
+60,cut onion
+61,chop onion
+62,open bottle
+63,put down bottle
+64,adjust hob
+65,stir food
+66,continue stirring food
+67,put down plates
+68,put down cutlery
+69,stir pasta
+70,turn off hob
+71,put down saucepan
+72,take saucepan
+73,move plate
 74,wash hands
 75,close tap
 76,take bowl
@@ -116,21 +117,21 @@ id,name
 115,move tap
 116,open freezer
 117,close freezer
-118,shake pan
-119,stir potatoes
-120,put down baking tray
-121,pick up baking tray
-122,pour water
-123,cut potato
-124,stir pan
-125,pick up onion
-126,peel onion
-127,pick up chopping board
-128,put down chopping board
-129,pick up container
-130,open microwave
-131,pick up fork
-132,clean sink
+118,stir potatoes
+119,put down baking tray
+120,pick up baking tray
+121,pour water
+122,cut potato
+123,stir pan
+124,pick up onion
+125,peel onion
+126,pick up chopping board
+127,put down chopping board
+128,pick up container
+129,open microwave
+130,pick up fork
+131,clean sink
+132,press button
 133,rinse pot
 134,take cup
 135,pick up scissors
@@ -138,64 +139,63 @@ id,name
 137,close dishwasher
 138,pick up knife
 139,take mug
-140,put mug
-141,rinse mug
-142,wash mug
-143,pick up cup
-144,pick up jar
-145,open lid
-146,wipe hands
-147,cut tomato
-148,close lid
-149,clean counter top
-150,turn tap on
-151,open cabinet
-152,close cabinet
-153,pick up pot
-154,pick up colander
-155,pick up sponge
-156,pick up mug
-157,wash bowl
-158,pick up wooden spoon
-159,pick up cheese
-160,pick up salt
-161,rinse bowl
-162,rinse hand
-163,pick up washing up liquid
-164,pick up spatula
-165,peel peach
-166,put down jar
-167,pick up cutting board
-168,cut peach
-169,remove slice
-170,shake hands
-171,pick up paper
-172,put knife
-173,lather plate
-174,pick up cloth
-175,rinse cloth
-176,pick up plates
-177,pick up bottle
-178,pick up cutlery
-179,close bottle
-180,lather glass
-181,pick up teaspoon
-182,put down teaspoon
-183,lather fork
-184,lather knife
-185,open door
-186,put down bag
-187,close door
-188,pick up pasta
-189,put down pot
-190,wipe surface
-191,chop potato
-192,pick up tea towel
-193,flip aubergine
-194,pick up saucepan
-195,put sponge
-196,put down meat
-197,put down mug
-198,roll out dough
-199,sharpening
-200,pick up aubergine
+140,rinse mug
+141,pick up cup
+142,pick up jar
+143,open lid
+144,cut tomato
+145,close lid
+146,clean counter top
+147,turn tap on
+148,open cabinet
+149,close cabinet
+150,pick up pot
+151,pick up colander
+152,pick up sponge
+153,pick up mug
+154,wash bowl
+155,pick up wooden spoon
+156,put down wooden spoon
+157,pick up cheese
+158,pick up salt
+159,rinse bowl
+160,rinse hand
+161,pick up washing up liquid
+162,pick up spatula
+163,rinse chopping board
+164,peel peach
+165,put down jar
+166,pick up cutting board
+167,cut peach
+168,remove slice
+169,shake hands
+170,pick up paper
+171,put knife
+172,lather plate
+173,pick up cloth
+174,rinse cloth
+175,pick up plates
+176,pick up bottle
+177,pick up cutlery
+178,close bottle
+179,lather glass
+180,pick up teaspoon
+181,put down teaspoon
+182,lather fork
+183,lather knife
+184,open door
+185,put down bag
+186,close door
+187,pick up pasta
+188,put down pot
+189,wipe surface
+190,pick up tea towel
+191,flip aubergine
+192,pick up saucepan
+193,put sponge
+194,put down meat
+195,put down mug
+196,roll out dough
+197,fold cheese
+198,sharpening
+199,pick up aubergine
