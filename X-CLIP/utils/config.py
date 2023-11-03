@@ -46,6 +46,9 @@ _C.TRAIN.OPTIMIZER = 'adamw'
 _C.TRAIN.OPT_LEVEL = 'O1'
 _C.TRAIN.AUTO_RESUME = False
 _C.TRAIN.USE_CHECKPOINT = False
+_C.TRAIN.STEP_SIZE = 10
+_C.TRAIN.LR_DECAY = 0.1
+_C.TRAIN.PATIENCE = 5
 
 # -----------------------------------------------------------------------------
 # Augmentation settings

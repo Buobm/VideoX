@@ -9,3 +9,4 @@ einops
 termcolor
 timm
 regex
+psutil

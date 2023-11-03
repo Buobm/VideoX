@@ -8,11 +8,11 @@ import datetime
 import shutil
 from pathlib import Path
 from utils.config import get_config
-from utils.optimizer import build_optimizer, build_scheduler
+from utils.optimizer import build_optimizer, build_scheduler, update_learning_rate
 from utils.tools import AverageMeter, reduce_tensor, epoch_saving, load_checkpoint, generate_text, auto_resume_helper
 from datasets.build import build_dataloader, img_norm_cfg
 from utils.logger import create_logger
-from utils.tensorboard_utils import ClassificationMetricsLogger, get_hparams, add_imagages_to_tensorboard
+from utils.tensorboard_utils import ClassificationMetricsLogger, get_hparams, add_imagages_to_tensorboard, log_system_resources, perform_tsne
 from torchvision.utils import make_grid
 from torch.utils.tensorboard import SummaryWriter
 import time
@@ -99,6 +99,8 @@ def main(config):
 
 
     text_labels = generate_text(train_data)
+    
+    perform_tsne(model, text_labels, train_data.classes, writer)
 
     if config.TEST.ONLY_TEST:
         acc1 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch=0)
@@ -108,8 +110,9 @@ def main(config):
         return
 
     for epoch in range(start_epoch, config.TRAIN.EPOCHS):
+        acc1 = 0.0
         train_loader.sampler.set_epoch(epoch)
-        train_one_epoch(epoch, model, criterion, optimizer, lr_scheduler, train_loader, text_labels, config, mixup_fn)
+        train_one_epoch(epoch, model, criterion, optimizer, lr_scheduler, train_loader, text_labels, config, mixup_fn, acc1)
 
         acc1 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch=epoch)
         logger.info(f"Accuracy of the network on the {len(val_data)} test videos: {acc1:.1f}%")
@@ -129,7 +132,7 @@ def main(config):
     parameters, metric = get_hparams(config,acc1)
     writer.add_hparams(parameters, metric)
 
-def train_one_epoch(epoch, model, criterion, optimizer, lr_scheduler, train_loader, text_labels, config, mixup_fn):
+def train_one_epoch(epoch, model, criterion, optimizer, lr_scheduler, train_loader, text_labels, config, mixup_fn, val_acc):
     model.train()
     optimizer.zero_grad()
     
@@ -168,20 +171,22 @@ def train_one_epoch(epoch, model, criterion, optimizer, lr_scheduler, train_load
         else:
             total_loss.backward()
         if config.TRAIN.ACCUMULATION_STEPS > 1:
-            if (idx + 1) % config.TRAIN.ACCUMULATION_STEPS == 0:
+            if (idx + 1) % config.TRAIN.ACCUMULATION_STEPS == 0 or idx == num_steps - 1:
                 optimizer.step()
                 optimizer.zero_grad()
-                lr_scheduler.step_update(epoch * num_steps + idx)
+                update_learning_rate(lr_scheduler, epoch, num_steps, idx, val_acc)
+                #lr_scheduler.step_update(epoch * num_steps + idx)
         else:
             optimizer.step()
-            lr_scheduler.step_update(epoch * num_steps + idx)
+            update_learning_rate(lr_scheduler, epoch, num_steps, idx, val_acc)
+            #lr_scheduler.step_update(epoch * num_steps + idx)
 
         torch.cuda.synchronize()
         
         tot_loss_meter.update(total_loss.item(), len(label_id))
         batch_time.update(time.time() - end)
         end = time.time()
-
+        
         if idx % config.PRINT_FREQ == 0:
             lr = optimizer.param_groups[0]['lr']
             memory_used = torch.cuda.max_memory_allocated() / (1024.0 * 1024.0)
@@ -194,6 +199,8 @@ def train_one_epoch(epoch, model, criterion, optimizer, lr_scheduler, train_load
                 f'mem {memory_used:.0f}MB')
             writer.add_scalar('Train/Learning Rate', lr, epoch * num_steps + idx)
             writer.add_scalar('Train/Total Loss', tot_loss_meter.avg, epoch * num_steps + idx)
+            log_system_resources(writer, epoch * num_steps + idx)
+        
     epoch_time = time.time() - start
     logger.info(f"EPOCH {epoch} training takes {datetime.timedelta(seconds=int(epoch_time))}")
 

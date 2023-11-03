@@ -71,8 +71,15 @@ def build_optimizer(config, model):
         have=("prompts",), not_have=()
     )
 
-    optimizer = optim.AdamW(clip_parameters + mit_parameters + prompts_parameters + msg_parameters,
+    # Choose optimizer based on config
+    if config.TRAIN.OPTIMIZER == 'adamw':
+        optimizer = optim.AdamW(clip_parameters + mit_parameters + prompts_parameters + msg_parameters,
                         betas=(0.9, 0.98), eps=1e-8,)
+    elif config.TRAIN.OPTIMIZER == 'adam':
+        optimizer = optim.Adam(clip_parameters + mit_parameters + prompts_parameters + msg_parameters,
+                        betas=(0.9, 0.98), eps=1e-8,)
+    else:
+        raise ValueError(f"Unsupported optimizer: {config.TRAIN.OPTIMIZER}")
    
     return optimizer
 
@@ -80,15 +87,62 @@ def build_optimizer(config, model):
 def build_scheduler(config, optimizer, n_iter_per_epoch):
     num_steps = int(config.TRAIN.EPOCHS * n_iter_per_epoch)
     warmup_steps = int(config.TRAIN.WARMUP_EPOCHS * n_iter_per_epoch)
-
-    lr_scheduler = CosineLRScheduler(
-        optimizer,
-        t_initial=num_steps,
-        lr_min=config.TRAIN.LR / 100,
-        warmup_lr_init=0,
-        warmup_t=warmup_steps,
-        cycle_limit=1,
-        t_in_epochs=False,
-    )
+    
+    if config.TRAIN.LR_SCHEDULER == 'cosine':
+        lr_scheduler = CosineLRScheduler(
+            optimizer,
+            t_initial=num_steps,
+            lr_min=config.TRAIN.LR / 100,
+            warmup_lr_init=0,
+            warmup_t=warmup_steps,
+            cycle_limit=1,
+            t_in_epochs=False,
+        )
+    elif config.TRAIN.LR_SCHEDULER == 'stepdecay':
+        lr_scheduler = optim.lr_scheduler.StepLR(
+            optimizer,
+            step_size=config.TRAIN.STEP_SIZE,
+            gamma=config.TRAIN.LR_DECAY,
+        )
+    elif config.TRAIN.LR_SCHEDULER == 'plateau':
+        lr_scheduler = optim.lr_scheduler.ReduceLROnPlateau(
+            optimizer,
+            mode='max', 
+            factor=config.TRAIN.LR_DECAY,
+            patience=config.TRAIN.PATIENCE,
+            verbose=True,
+            threshold=1e-4,
+            min_lr=config.TRAIN.LR / 100
+        )
+    else:
+        raise ValueError(f"Unsupported learning rate scheduler: {config.TRAIN.LR_SCHEDULER}")
 
     return lr_scheduler
+
+def update_learning_rate(lr_scheduler, epoch, num_steps, index ,val_loss=None):
+    """
+    Update the learning rate based on the type of the provided scheduler.
+
+    Args:
+    - lr_scheduler: The learning rate scheduler object.
+    - val_loss: The validation loss. Required if using 'ReduceLROnPlateau'.
+    - current_step: Current overall step (usually epoch * num_steps + idx). Required if using a custom scheduler like 'CosineLRScheduler'.
+    - index: Required to check for new epoch if using STEP LR scheduler or ReduceLROnPlateau scheduler.
+
+    Returns:
+    - None
+    """
+    if index == num_steps -1:
+        print("index == num_steps -1")
+    if isinstance(lr_scheduler, optim.lr_scheduler.StepLR):
+        if index == num_steps -1:
+            lr_scheduler.step()
+            print("step")
+    elif isinstance(lr_scheduler, optim.lr_scheduler.ReduceLROnPlateau):
+        if val_loss is None:
+            raise ValueError("val_loss is required for ReduceLROnPlateau scheduler")
+        if index == num_steps -1:
+            lr_scheduler.step(val_loss)
+    else:
+        # Assuming all other custom schedulers like CosineLRScheduler have step_update method
+        lr_scheduler.step_update(epoch * num_steps + index)
