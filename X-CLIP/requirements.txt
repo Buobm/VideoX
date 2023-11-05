@@ -1,5 +1,5 @@
-torch==1.11.0
-torchvision==0.12.0
+torch==1.11.0+cu113
+torchvision==0.12.0+cu113
 tensorboard
 pathlib
 mmcv-full
@@ -10,3 +10,5 @@ termcolor
 timm
 regex
 psutil
+PyYAML
+yacs

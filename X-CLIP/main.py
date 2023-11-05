@@ -100,7 +100,7 @@ def main(config):
 
     text_labels = generate_text(train_data)
     
-    perform_tsne(model, text_labels, train_data.classes, writer)
+    #perform_tsne(model, text_labels, train_data.classes, writer)
 
     if config.TEST.ONLY_TEST:
         acc1 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch=0)

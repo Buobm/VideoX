@@ -1,12 +1,13 @@
 #!/bin/bash
 
 #SBATCH --nodes=1
-#SBATCH --ntasks=16
-#SBATCH --gpus-per-node=4
-#SBATCH --time=4:00:00
+#SBATCH --ntasks=8
+#SBATCH --gpus-per-node=1
+#SBATCH --gres=gpumem:20g
+#SBATCH --time=02:00:00
 #SBATCH --mem-per-cpu=8000
 #SBATCH --tmp=4000 # per node!!
-#SBATCH --job-name=X-CLIP_4GPU
+#SBATCH --job-name=X-CLIP
 #SBATCH --output=X-CLIP.out
 #SBATCH --error=X-CLIP.err
 #SBATCH --mail-type=BEGIN
@@ -19,11 +20,10 @@
 # check if env exists and meets all requirements from requirements.txt
 
 # Load the required modules
-module load gcc/6.3.0
-module load python_gpu/3.7.4 #also just loads "cuda" and "cudnn"
+module load gcc/6.3.0 python/3.7.4 cuda/11.3.1 cudnn/8.8.1.3 nccl/2.11.4-1
 module load eth_proxy
 
-source env/bin/activate
+source myenv/bin/activate
 
 echo "GPUs allocated by SLURM: ${CUDA_VISIBLE_DEVICES}"
 
@@ -40,7 +40,7 @@ echo "GPUs allocated by SLURM: ${CUDA_VISIBLE_DEVICES}"
 # --opts TEST.NUM_CLIP 4 TEST.NUM_CROP 3
 
 #Train X-CLIP
-python -m torch.distributed.launch --nproc_per_node=4 main.py \
--cfg configs/epic_kitchen_100/32_8.yaml \
---output /cluster/scratch/buobm/X-CLIP_Output \
---resume /cluster/scratch/buobm/X-CLIP_Output/best.pth
+python -m torch.distributed.launch --nproc_per_node=1 main.py \
+-cfg configs/HoloAssist/16_16.yaml \
+--output /cluster/scratch/buobm/X-CLIP_Output/HoloAssist \
+#--resume /cluster/scratch/buobm/X-CLIP_Output/best.pth

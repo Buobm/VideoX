@@ -98,7 +98,7 @@ def build_scheduler(config, optimizer, n_iter_per_epoch):
             cycle_limit=1,
             t_in_epochs=False,
         )
-    elif config.TRAIN.LR_SCHEDULER == 'stepdecay':
+    elif config.TRAIN.LR_SCHEDULER == 'step':
         lr_scheduler = optim.lr_scheduler.StepLR(
             optimizer,
             step_size=config.TRAIN.STEP_SIZE,
@@ -107,7 +107,7 @@ def build_scheduler(config, optimizer, n_iter_per_epoch):
     elif config.TRAIN.LR_SCHEDULER == 'plateau':
         lr_scheduler = optim.lr_scheduler.ReduceLROnPlateau(
             optimizer,
-            mode='max', 
+            mode='max',
             factor=config.TRAIN.LR_DECAY,
             patience=config.TRAIN.PATIENCE,
             verbose=True,
