@@ -132,12 +132,10 @@ def update_learning_rate(lr_scheduler, epoch, num_steps, index ,val_loss=None):
     Returns:
     - None
     """
-    if index == num_steps -1:
-        print("index == num_steps -1")
+
     if isinstance(lr_scheduler, optim.lr_scheduler.StepLR):
         if index == num_steps -1:
             lr_scheduler.step()
-            print("step")
     elif isinstance(lr_scheduler, optim.lr_scheduler.ReduceLROnPlateau):
         if val_loss is None:
             raise ValueError("val_loss is required for ReduceLROnPlateau scheduler")
