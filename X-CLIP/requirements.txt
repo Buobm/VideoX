@@ -12,3 +12,5 @@ regex
 psutil
 PyYAML
 yacs
+scikit-learn
+matplotlib
