@@ -39,6 +39,10 @@ class XCLIP(CLIP):
                  use_text_prompts=True,
                  num_classes=None
 
+                # skip text encoder
+                 use_text_prompts=True,
+                 num_classes=None
+
                  ):
         super().__init__(
             embed_dim,

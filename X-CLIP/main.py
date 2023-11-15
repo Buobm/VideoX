@@ -63,7 +63,7 @@ def main(config):
                             logger=logger,
                             use_text_prompts=config.MODEL.USE_TEXT_PROMPTS,
                             num_classes= config.DATA.NUM_CLASSES,
-                            )
+                        )
     elif config.MODEL.NAME == 'CLIPMEAN':
         assert config.TEST.ONLY_TEST, "CLIP model can only be used for inference"
         model = clip_mean.CLIPBenchmark(config.MODEL.ARCH) 
@@ -248,9 +248,11 @@ def validate(val_loader, text_labels, model, config, train_data, epoch=0, confus
                 output = model(image_input, text_inputs)
                 
                 similarity = output.view(b, -1).softmax(dim=-1)
+                print(similarity)
                 tot_similarity += similarity
             values_1, indices_1 = tot_similarity.topk(1, dim=-1)
             values_5, indices_5 = tot_similarity.topk(5, dim=-1)
+            print(indices_1)
             acc1, acc5 = 0, 0
             for i in range(b):
                 if indices_1[i] == label_id[i]:
