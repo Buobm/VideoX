@@ -256,6 +256,7 @@ def get_hparams(config, max_accuracy):
         'FIX_TEXT': config.MODEL.FIX_TEXT,
         'PRETRAINED': config.MODEL.PRETRAINED,
         'RESUME': config.MODEL.RESUME,
+        'USE_TEXT_PROMPTS': config.MODEL.USE_TEXT_PROMPTS,
         'NUM_FRAMES': config.DATA.NUM_FRAMES,
         'NUM_CLASSES': config.DATA.NUM_CLASSES,
         'NUM_CROPS': config.TEST.NUM_CROP,

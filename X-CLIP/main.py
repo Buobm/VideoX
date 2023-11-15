@@ -60,6 +60,8 @@ def main(config):
                          use_checkpoint=config.TRAIN.USE_CHECKPOINT, 
                          use_cache=config.MODEL.FIX_TEXT,
                          logger=logger,
+                         use_text_prompts=config.MODEL.USE_TEXT_PROMPTS,
+                         num_classes= config.DATA.NUM_CLASSES,
                         )
     model = model.cuda()
 
@@ -80,7 +82,7 @@ def main(config):
     lr_scheduler = build_scheduler(config, optimizer, len(train_loader))
     if config.TRAIN.OPT_LEVEL != 'O0':
         model, optimizer = amp.initialize(models=model, optimizers=optimizer, opt_level=config.TRAIN.OPT_LEVEL)
-    model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[config.LOCAL_RANK], broadcast_buffers=False, find_unused_parameters=False)
+    model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[config.LOCAL_RANK], broadcast_buffers=False, find_unused_parameters=True)
 
     start_epoch, max_accuracy = 0, 0.0
 
@@ -239,10 +241,11 @@ def validate(val_loader, text_labels, model, config, train_data, epoch=0, confus
                 output = model(image_input, text_inputs)
                 
                 similarity = output.view(b, -1).softmax(dim=-1)
+                print(similarity)
                 tot_similarity += similarity
-
             values_1, indices_1 = tot_similarity.topk(1, dim=-1)
             values_5, indices_5 = tot_similarity.topk(5, dim=-1)
+            print(indices_1)
             acc1, acc5 = 0, 0
             for i in range(b):
                 if indices_1[i] == label_id[i]:

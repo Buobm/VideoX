@@ -35,13 +35,18 @@ class XCLIP(CLIP):
                  # other
                  use_cache=True,
                  use_checkpoint=False,
+                # skip text encoder
+                 use_text_prompts=True,
+                 num_classes=None
+
                  ):
         super().__init__(
             embed_dim,
             image_resolution, vision_layers, vision_width, vision_patch_size,
             context_length, vocab_size, transformer_width, transformer_heads, transformer_layers
         )
-        
+        self.use_text_prompts = use_text_prompts
+        self.num_classes = num_classes
         self.prompts_generator = VideoSpecificPrompt(layers=prompts_layers, embed_dim=embed_dim, alpha=prompts_alpha,)
         self.use_cache=use_cache
         self.mit = MultiframeIntegrationTransformer(T=T, embed_dim=embed_dim, layers=mit_layers,)
@@ -77,7 +82,20 @@ class XCLIP(CLIP):
         self.cache_text_features = None
         self.prompts_visual_ln = LayerNorm(vision_width)
         self.prompts_visual_proj = nn.Parameter(torch.randn(vision_width, embed_dim))
-        
+        # Add classifier if use_text_prompts is False
+        if self.use_text_prompts is False:
+            self.classifier = nn.Sequential(
+                nn.Linear(embed_dim, embed_dim),
+                nn.ReLU(),
+                nn.Linear(embed_dim, embed_dim),
+                nn.ReLU(),
+                nn.Linear(embed_dim, embed_dim),
+                nn.ReLU(),
+                nn.Linear(embed_dim, num_classes)
+                # nn.Softmax(dim=1)
+            )
+        else:
+            self.classifier = None
         self.initialize_parameters()
     
     @torch.jit.ignore
@@ -131,23 +149,32 @@ class XCLIP(CLIP):
         video_features, img_features = self.encode_video(image) 
         img_features = img_features.mean(dim=1, keepdim=False)
 
-        if self.use_cache:
-            text_features = self.cache_text(text)
+        if self.use_text_prompts:
+            if self.use_cache:
+                text_features = self.cache_text(text)
+            else:
+                text_features = self.encode_text(text)
+            
+            text_features = text_features.unsqueeze(0).expand(b, -1, -1)
+            text_features = text_features + self.prompts_generator(text_features, img_features)
+            
+            video_features = video_features / video_features.norm(dim=-1, keepdim=True)
+            text_features = text_features / text_features.norm(dim=-1, keepdim=True)
+            logit_scale = self.logit_scale.exp()
+            logits = torch.einsum("bd,bkd->bk", video_features, logit_scale * text_features)
         else:
-            text_features = self.encode_text(text)
-        
-        text_features = text_features.unsqueeze(0).expand(b, -1, -1)
-        text_features = text_features + self.prompts_generator(text_features, img_features)
-           
-        video_features = video_features / video_features.norm(dim=-1, keepdim=True)
-        text_features = text_features / text_features.norm(dim=-1, keepdim=True)
-        logit_scale = self.logit_scale.exp()
-        logits = torch.einsum("bd,bkd->bk", video_features, logit_scale * text_features)
-        
+            if self.classifier is not None:
+                #video_features = video_features / video_features.norm(dim=-1, keepdim=True)
+                # Pass video_features through the classifier
+                logits = self.classifier(video_features)
+                logits = logits / logits.norm(dim=-1, keepdim=True)
+            else:
+                raise ValueError("classifier not defined.")
         return logits
 
 
-def build_model(state_dict: dict, T=8, droppath=0., use_checkpoint=False, logger=None, prompts_alpha=1e-1, prompts_layers=2, use_cache=True, mit_layers=4,):
+def build_model(state_dict: dict, T=8, droppath=0., use_checkpoint=False, logger=None, prompts_alpha=1e-1, prompts_layers=2, use_cache=True, mit_layers=4,
+                use_text_prompts=True, num_classes=None):
     vit = "visual.proj" in state_dict
 
     if vit:
@@ -180,6 +207,7 @@ def build_model(state_dict: dict, T=8, droppath=0., use_checkpoint=False, logger
         T=T, droppath=droppath, mit_layers=mit_layers,
         prompts_alpha=prompts_alpha, prompts_layers=prompts_layers,
         use_checkpoint=use_checkpoint, use_cache=use_cache,
+        use_text_prompts=use_text_prompts, num_classes=num_classes
     )
 
     for key in ["input_resolution", "context_length", "vocab_size"]:
@@ -194,7 +222,9 @@ def build_model(state_dict: dict, T=8, droppath=0., use_checkpoint=False, logger
 
 def load(model_path, name: str, device: Union[str, torch.device] = "cuda" if torch.cuda.is_available() else "cpu", 
          jit=True, T=8, droppath=0., use_checkpoint=False, logger=None, use_cache=True, prompts_alpha=1e-1, prompts_layers=2, mit_layers=1,
+         use_text_prompts=True, num_classes=None
 ):
+    assert use_text_prompts or num_classes is not None, "num_classes must be specified when not using text prompts."
     if model_path is None:
         model_path = clip._download(clip._MODELS[name])
     try:
@@ -214,6 +244,8 @@ def load(model_path, name: str, device: Union[str, torch.device] = "cuda" if tor
                         prompts_layers=prompts_layers,
                         use_cache=use_cache,
                         mit_layers=mit_layers,
+                        use_text_prompts=use_text_prompts,
+                        num_classes=num_classes
                         )
     if str(device) == "cpu":
         model.float()
