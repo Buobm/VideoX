@@ -3,8 +3,8 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=8
 #SBATCH --gpus-per-node=1
-#SBATCH --gres=gpumem:20g
-#SBATCH --time=02:00:00
+#SBATCH --gres=gpumem:30g
+#SBATCH --time=00:20:00
 #SBATCH --mem-per-cpu=8000
 #SBATCH --tmp=4000 # per node!!
 #SBATCH --job-name=X-CLIP
@@ -27,6 +27,8 @@ source myenv/bin/activate
 
 echo "GPUs allocated by SLURM: ${CUDA_VISIBLE_DEVICES}"
 
+FREE_PORT=$(python -c 'import socket; sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM); sock.bind(("", 0)); print(sock.getsockname()[1]); sock.close()')
+echo "Free Port: ${FREE_PORT}"
 #tensorboard --logdir output/tonsorboard/ --bind_all --port=9876
 
 #tensorboard --logdir output/tonsorboard/
@@ -40,7 +42,8 @@ echo "GPUs allocated by SLURM: ${CUDA_VISIBLE_DEVICES}"
 # --opts TEST.NUM_CLIP 4 TEST.NUM_CROP 3
 
 #Train X-CLIP
-python -m torch.distributed.launch --nproc_per_node=1 main.py \
--cfg configs/HoloAssist/16_16.yaml \
+python -m torch.distributed.launch --nproc_per_node=1 --master_port=$FREE_PORT main.py  \
+-cfg configs/HoloAssist/14_8.yaml \
 --output /cluster/scratch/buobm/X-CLIP_Output/HoloAssist \
-#--resume /cluster/scratch/buobm/X-CLIP_Output/best.pth
+--only_test \
+--resume /cluster/scratch/buobm/X-CLIP_Output/HoloAssist/best.pth
