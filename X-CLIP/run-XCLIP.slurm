@@ -3,8 +3,8 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=8
 #SBATCH --gpus-per-node=1
-#SBATCH --gres=gpumem:20g
-#SBATCH --time=02:00:00
+#SBATCH --gres=gpumem:30g
+#SBATCH --time=00:20:00
 #SBATCH --mem-per-cpu=8000
 #SBATCH --tmp=4000 # per node!!
 #SBATCH --job-name=X-CLIP
