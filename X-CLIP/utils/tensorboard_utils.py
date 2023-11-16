@@ -1,8 +1,14 @@
 # Helper functions for tensorboard visualization
 import torch
+import torchvision
 import psutil
 from datasets.build import img_norm_cfg
 from yacs.config import CfgNode as CN
+from sklearn.metrics import confusion_matrix
+import numpy as np
+import matplotlib.pyplot as plt
+import io
+import PIL
 
 class ClassificationMetricsLogger:
     def __init__(self, num_classes):
@@ -88,6 +94,159 @@ def perform_tsne(model, text_tokens, class_data, writer):
     embeddings = model.encode_text(text_tokens)
 
     writer.add_embedding(embeddings, metadata=classes, tag='Text Embeddings')
+
+class ConfusionMatrixLogger:
+    """
+    Generate confusion matrices from predictions and true labels and log them to TensorBoard.
+    """
+    def __init__(self, train_data):
+        class_data = train_data.classes 
+        self.classes = [c for i, c in class_data]
+        self.num_classes = len(self.classes)
+        self.true_labels = []
+        self.pred_labels = []
+
+    def update(self, pred_indices, true_labels):
+        """
+        Update the confusion matrix with the provided predictions and true labels.
+        
+        Parameters:
+        - pred_indices: A tensor of shape (N, ) containing the predicted class indices.
+        - true_labels: A tensor of shape (N, ) containing the true class indices.
+        
+        Returns:
+        None. The function will update the confusion matrix.
+        """
+        self.pred_labels.extend(pred_indices.cpu().tolist())
+        self.true_labels.extend(true_labels.cpu().tolist())
+
+    def generate_confusion_matrix(self, writer, epoch):
+        """
+        Generate the confusion matrix and add it to TensorBoard.
+        """
+
+        self.log_top_confusions(20,writer, epoch)
+        cm = confusion_matrix(self.true_labels, self.pred_labels)
+        figure = self.plot_confusion_matrix(cm, class_names=self.classes)
+        cm_image = self.plot_to_image(figure)
+        writer.add_image("Validation/Confusion Matrix", cm_image, epoch)
+        self.reset()
+    
+    def plot_to_image(self, figure):
+        """
+        Converts the matplotlib plot specified by 'figure' to a PNG image and
+        returns it. The supplied figure is closed and inaccessible after this call.
+        """
+        
+        buf = io.BytesIO()
+        
+        # Use plt.savefig to save the plot to a PNG in memory.
+        plt.savefig(buf, format='png')
+        
+        # Closing the figure prevents it from being displayed directly inside
+        # the notebook.
+        plt.close(figure)
+        buf.seek(0)
+        
+        image = PIL.Image.open(buf)
+        image = torchvision.transforms.ToTensor()(image )#.unsqueeze(0)
+        
+        return image
+    
+    def plot_confusion_matrix(self, cm, class_names, threshold=0.05):
+        """
+        Returns a matplotlib figure containing the plotted confusion matrix.
+        
+        Args:
+        cm (array, shape = [n, n]): a confusion matrix of integer classes
+        class_names (array, shape = [n]): String names of the integer classes
+        threshold (float): minimum normalized value to display the confusion
+        """
+        # Normalize the confusion matrix.
+        with np.errstate(divide='ignore', invalid='ignore'):
+            normalized_cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+            normalized_cm = np.nan_to_num(normalized_cm) 
+        
+        # Create a mask to only show confusions above a certain threshold.
+        mask = normalized_cm >= threshold
+
+        figure = plt.figure(figsize=(20, 20))
+        plt.imshow(normalized_cm, interpolation='nearest', cmap=plt.cm.Blues)
+        plt.title("Confusion matrix")
+        plt.colorbar()
+        
+        tick_marks = np.arange(len(class_names))
+        plt.xticks(tick_marks, class_names, rotation=90)
+        plt.yticks(tick_marks, class_names)
+        plt.grid(False)  # Hide the grid lines for better clarity
+
+        for i, j in zip(*np.where(mask)):
+            plt.text(j, i, f'{normalized_cm[i, j]:.2f}',
+                    horizontalalignment="center",
+                    color="white" if normalized_cm[i, j] > (cm.max() / 2.) else "black")
+
+        plt.tight_layout()
+        plt.ylabel('True label')
+        plt.xlabel('Predicted label')
+        return figure
+    
+    def top_confusions(self, num_top=10):
+        """
+        Find the top X confusions from the confusion matrix.
+
+        Args:
+        top_x (int): Number of top confusions to return.
+
+        Returns:
+        A list of tuples indicating the most confused class pairs.
+        Each tuple contains (true_label, predicted_label, count).
+        """
+        cm = confusion_matrix(self.true_labels, self.pred_labels)
+        
+        # We're interested only in the non-diagonal elements, so we zero the diagonal.
+        np.fill_diagonal(cm, 0)
+        
+        # Flatten the matrix to 1D array for argsort
+        flat_cm = cm.flatten()
+        
+        # Get the indices of the top X values
+        indices = np.argpartition(flat_cm, -num_top)[-num_top:]
+        
+        # Since argpartition doesn't guarantee sorted order, we sort the indices
+        indices = indices[np.argsort(flat_cm[indices])][::-1]
+        
+        # Map flat indices back to 2D indices
+        rows, cols = np.unravel_index(indices, cm.shape)
+
+        # Retrieve class names and counts for the top confusions
+        confusions = [(self.classes[row], self.classes[col], cm[row, col]) for row, col in zip(rows, cols)]
+        
+        return confusions
+    
+    def log_top_confusions(self, top_x, writer, epoch):
+        """
+        Log the top X confusions to TensorBoard as text.
+
+        Args:
+        top_x (int): Number of top confusions to log.
+        writer (SummaryWriter): The TensorBoard summary writer.
+        global_step (int): Global step value to tag the summary with.
+        """
+        confusions = self.top_confusions(top_x)
+        
+        confusions = self.top_confusions(top_x)
+        confusion_str = "Top {} Confusions:\n```\n".format(top_x)
+        for true, predicted, count in confusions:
+            confusion_str += "True: {:20} | Predicted: {:20} | Count: {}\n".format(true, predicted, count)
+        confusion_str += "```"
+        
+        writer.add_text("Validation/Top Confusions", confusion_str, epoch)
+
+
+    def reset(self):
+        self.true_labels = []
+        self.pred_labels = []
+        
 
 def get_hparams(config, max_accuracy):
     # Extract hyperparameters

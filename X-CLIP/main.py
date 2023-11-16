@@ -12,7 +12,7 @@ from utils.optimizer import build_optimizer, build_scheduler, update_learning_ra
 from utils.tools import AverageMeter, reduce_tensor, epoch_saving, load_checkpoint, generate_text, auto_resume_helper
 from datasets.build import build_dataloader, img_norm_cfg
 from utils.logger import create_logger
-from utils.tensorboard_utils import ClassificationMetricsLogger, get_hparams, add_imagages_to_tensorboard, log_system_resources, perform_tsne
+from utils.tensorboard_utils import ClassificationMetricsLogger, get_hparams, add_imagages_to_tensorboard, log_system_resources, perform_tsne, ConfusionMatrixLogger
 from torchvision.utils import make_grid
 from torch.utils.tensorboard import SummaryWriter
 import time
@@ -103,7 +103,7 @@ def main(config):
     #perform_tsne(model, text_labels, train_data.classes, writer)
 
     if config.TEST.ONLY_TEST:
-        acc1 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch=0)
+        acc1 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch=0, confusion_matrix_log=True)
         logger.info(f"Accuracy of the network on the {len(val_data)} test videos: {acc1:.1f}%")
         parameters, metric = get_hparams(config,acc1)
         writer.add_hparams(parameters, metric)
@@ -122,12 +122,12 @@ def main(config):
         if dist.get_rank() == 0 and (epoch % config.SAVE_FREQ == 0 or epoch == (config.TRAIN.EPOCHS - 1)):
             epoch_saving(config, epoch, model.module, max_accuracy, optimizer, lr_scheduler, logger, config.OUTPUT, is_best)
 
-    config.defrost()
-    config.TEST.NUM_CLIP = 4
-    config.TEST.NUM_CROP = 3
-    config.freeze()
+    # config.defrost()
+    # config.TEST.NUM_CLIP = 4
+    # config.TEST.NUM_CROP = 3
+    # config.freeze()
     train_data, val_data, train_loader, val_loader = build_dataloader(logger, config)
-    acc1 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch= config.TRAIN.EPOCHS + 1)
+    acc1 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch= config.TRAIN.EPOCHS + 1, confusion_matrix_log=True)
     logger.info(f"Accuracy of the network on the {len(val_data)} test videos: {acc1:.1f}%")
     parameters, metric = get_hparams(config,acc1)
     writer.add_hparams(parameters, metric)
@@ -205,12 +205,14 @@ def train_one_epoch(epoch, model, criterion, optimizer, lr_scheduler, train_load
     logger.info(f"EPOCH {epoch} training takes {datetime.timedelta(seconds=int(epoch_time))}")
 
 @torch.no_grad()
-def validate(val_loader, text_labels, model, config, train_data, epoch=0 ):
+def validate(val_loader, text_labels, model, config, train_data, epoch=0, confusion_matrix_log=False):
     model.eval()
     
     acc1_meter, acc5_meter = AverageMeter(), AverageMeter()
     # Initialize the classification logger
     metrics_logger = ClassificationMetricsLogger(num_classes=config.DATA.NUM_CLASSES)
+    if confusion_matrix_log:
+        confusion_matrix_logger = ConfusionMatrixLogger(train_data=train_data)
 
     with torch.no_grad():
         text_inputs = text_labels.cuda()
@@ -253,7 +255,9 @@ def validate(val_loader, text_labels, model, config, train_data, epoch=0 ):
                     acc5 += 1
             # Update TP, FP, FN 
             metrics_logger.update(indices_1, label_id)
-           
+            if confusion_matrix_log:
+                confusion_matrix_logger.update(indices_1, label_id)
+            
             acc1_meter.update(float(acc1) / b * 100, b)
             acc5_meter.update(float(acc5) / b * 100, b)
             if idx % config.PRINT_FREQ == 0:
@@ -266,6 +270,8 @@ def validate(val_loader, text_labels, model, config, train_data, epoch=0 ):
     logger.info(f' * Acc@1 {acc1_meter.avg:.3f} Acc@5 {acc5_meter.avg:.3f}')
     writer.add_scalar('Validation/Accuracy@1', acc1_meter.avg, epoch)
     writer.add_scalar('Validation/Accuracy@5', acc5_meter.avg, epoch)
+    if confusion_matrix_log:
+        confusion_matrix_logger.generate_confusion_matrix(writer, epoch)
     metrics_logger.write_to_tensorboard(writer, epoch)
     metrics_logger.reset()
     return acc1_meter.avg

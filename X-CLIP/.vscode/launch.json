@@ -7,11 +7,11 @@
             "request": "launch",
             "program": "${workspaceFolder}/main.py",
             "args": [
-                "-cfg", "configs/epic_kitchen_100/32_8.yaml",
+                "-cfg", "configs/HoloAssist/32_8.yaml",
                 "--output", "/home/mischa/ETH/semester_project/VideoX/X-CLIP/output",
-                "--only_test",
-                "--resume", "checkpoints/k400_32_8.pth",
-                "--opts", "TEST.NUM_CLIP", "4", "TEST.NUM_CROP", "3"
+                //"--only_test",
+                // "--resume", "checkpoints/k400_32_8.pth",
+                // "--opts", "TEST.NUM_CLIP", "4", "TEST.NUM_CROP", "3"
             ],
             "env": {
                 "MASTER_ADDR": "localhost",
