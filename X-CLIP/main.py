@@ -160,7 +160,7 @@ def train_one_epoch(epoch, model, criterion, optimizer, lr_scheduler, train_load
         if texts.shape[0] == 1:
             texts = texts.view(1, -1)
         
-        output = model(images, texts)
+        output = model(images)
 
         total_loss = criterion(output, label_id)
         total_loss = total_loss / config.TRAIN.ACCUMULATION_STEPS
@@ -207,7 +207,7 @@ def train_one_epoch(epoch, model, criterion, optimizer, lr_scheduler, train_load
     logger.info(f"EPOCH {epoch} training takes {datetime.timedelta(seconds=int(epoch_time))}")
 
 @torch.no_grad()
-def validate(val_loader, text_labels, model, config, train_data, epoch=0, confusion_matrix_log=False):
+def validate(val_loader, text_labels, model, config, train_data, epoch=0, confusion_matrix_log=True):
     model.eval()
     
     acc1_meter, acc5_meter = AverageMeter(), AverageMeter()
@@ -238,14 +238,12 @@ def validate(val_loader, text_labels, model, config, train_data, epoch=0, confus
                 if config.TRAIN.OPT_LEVEL == 'O2':
                     image_input = image_input.half()
                 
-                output = model(image_input, text_inputs)
+                output = model(image_input)
                 
                 similarity = output.view(b, -1).softmax(dim=-1)
-                print(similarity)
                 tot_similarity += similarity
             values_1, indices_1 = tot_similarity.topk(1, dim=-1)
             values_5, indices_5 = tot_similarity.topk(5, dim=-1)
-            print(indices_1)
             acc1, acc5 = 0, 0
             for i in range(b):
                 if indices_1[i] == label_id[i]:

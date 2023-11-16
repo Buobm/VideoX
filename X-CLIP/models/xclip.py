@@ -47,8 +47,8 @@ class XCLIP(CLIP):
         )
         self.use_text_prompts = use_text_prompts
         self.num_classes = num_classes
-        self.prompts_generator = VideoSpecificPrompt(layers=prompts_layers, embed_dim=embed_dim, alpha=prompts_alpha,)
-        self.use_cache=use_cache
+        #self.prompts_generator = VideoSpecificPrompt(layers=prompts_layers, embed_dim=embed_dim, alpha=prompts_alpha,)
+        #self.use_cache=use_cache
         self.mit = MultiframeIntegrationTransformer(T=T, embed_dim=embed_dim, layers=mit_layers,)
 
         dpr = [x.item() for x in torch.linspace(0, droppath, vision_layers)] if droppath > 0. else None
@@ -76,27 +76,33 @@ class XCLIP(CLIP):
         self.token_embedding = nn.Embedding(vocab_size, transformer_width)
         self.positional_embedding = nn.Parameter(torch.empty(self.context_length, transformer_width))
         self.ln_final = LayerNorm(transformer_width)
-        self.text_projection = nn.Parameter(torch.empty(transformer_width, embed_dim))
-        self.logit_scale = nn.Parameter(torch.ones([]) * np.log(1 / 0.07))
+        #self.text_projection = nn.Parameter(torch.empty(transformer_width, embed_dim))
+        #self.logit_scale = nn.Parameter(torch.ones([]) * np.log(1 / 0.07))
 
-        self.cache_text_features = None
+        # self.cache_text_features = None
         self.prompts_visual_ln = LayerNorm(vision_width)
         self.prompts_visual_proj = nn.Parameter(torch.randn(vision_width, embed_dim))
         # Add classifier if use_text_prompts is False
-        if self.use_text_prompts is False:
-            self.classifier = nn.Sequential(
-                nn.Linear(embed_dim, embed_dim),
-                nn.ReLU(),
-                nn.Linear(embed_dim, embed_dim),
-                nn.ReLU(),
-                nn.Linear(embed_dim, embed_dim),
-                nn.ReLU(),
-                nn.Linear(embed_dim, num_classes)
-                # nn.Softmax(dim=1)
-            )
-        else:
-            self.classifier = None
-        self.initialize_parameters()
+        dropout_rate = 0.2
+        self.classifier = nn.Sequential(
+            nn.Linear(embed_dim, embed_dim),
+            nn.BatchNorm1d(embed_dim),
+            nn.LeakyReLU(),
+            nn.Dropout(dropout_rate),
+
+            nn.Linear(embed_dim, embed_dim),
+            nn.BatchNorm1d(embed_dim),
+            nn.LeakyReLU(),
+            nn.Dropout(dropout_rate),
+
+            nn.Linear(embed_dim, embed_dim),
+            nn.BatchNorm1d(embed_dim),
+            nn.LeakyReLU(),
+            nn.Dropout(dropout_rate),
+
+            nn.Linear(embed_dim, num_classes)
+        )
+        # self.initialize_parameters()
     
     @torch.jit.ignore
     def no_weight_decay_keywords(self):
@@ -144,10 +150,13 @@ class XCLIP(CLIP):
         self.train()
         return self.cache_text_features
 
-    def forward(self, image, text):
+    def forward(self, image):
         b = image.shape[0]
         video_features, img_features = self.encode_video(image) 
-        img_features = img_features.mean(dim=1, keepdim=False)
+        #img_features = img_features.mean(dim=1, keepdim=False)
+        logits = self.classifier(video_features)
+        logits = logits / logits.norm(dim=-1, keepdim=True)
+        return logits
 
         if self.use_text_prompts:
             if self.use_cache:

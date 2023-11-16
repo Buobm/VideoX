@@ -44,8 +44,8 @@ def build_optimizer(config, model):
     model = model.module if hasattr(model, 'module') else model
     
     # fix text
-    if config.MODEL.FIX_TEXT:
-        fix_text(model)
+    # if config.MODEL.FIX_TEXT:
+    #     fix_text(model)
     
     # set decay and lr
     skip = {}
@@ -54,10 +54,10 @@ def build_optimizer(config, model):
         skip = model.no_weight_decay()
     if hasattr(model, 'no_weight_decay_keywords'):
         skip_keywords = model.no_weight_decay_keywords()
-    clip_parameters = set_weight_decay(model, skip, skip_keywords, 
-        weight_decay=config.TRAIN.WEIGHT_DECAY, lr=config.TRAIN.LR, 
-        have=(), not_have=("prompts", "mit", "message_", "classifier")
-    )
+    # clip_parameters = set_weight_decay(model, skip, skip_keywords, 
+    #     weight_decay=config.TRAIN.WEIGHT_DECAY, lr=config.TRAIN.LR, 
+    #     have=(), not_have=("prompts", "mit", "message_", "classifier")
+    # )
     msg_parameters = set_weight_decay(model, skip, skip_keywords,
         weight_decay=config.TRAIN.WEIGHT_DECAY, lr=config.TRAIN.LR*10, 
         have=("message_",), not_have=()
@@ -72,20 +72,17 @@ def build_optimizer(config, model):
     )
 
     # Classifier parameters
-    if model.classifier is not None:
-        classifier_parapeters = set_weight_decay(model, skip, skip_keywords,
-        weight_decay=config.TRAIN.WEIGHT_DECAY, lr=config.TRAIN.LR*100,
-        have=("classifier",), not_have=()
-        )
-    else:
-        classifier_parapeters = []
+    classifier_parapeters = set_weight_decay(model, skip, skip_keywords,
+    weight_decay=config.TRAIN.WEIGHT_DECAY, lr=config.TRAIN.LR*10,
+    have=("classifier",), not_have=()
+    )
 
     # Choose optimizer based on config
     if config.TRAIN.OPTIMIZER == 'adamw':
-        optimizer = optim.AdamW(clip_parameters + mit_parameters + prompts_parameters + msg_parameters + classifier_parapeters,
+        optimizer = optim.AdamW(mit_parameters + prompts_parameters + msg_parameters + classifier_parapeters,
                         betas=(0.9, 0.98), eps=1e-8,)
     elif config.TRAIN.OPTIMIZER == 'adam':
-        optimizer = optim.Adam(clip_parameters + mit_parameters + prompts_parameters + msg_parameters + classifier_parapeters,
+        optimizer = optim.Adam(mit_parameters + prompts_parameters + msg_parameters + classifier_parapeters,
                         betas=(0.9, 0.98), eps=1e-8,)
     else:
         raise ValueError(f"Unsupported optimizer: {config.TRAIN.OPTIMIZER}")
