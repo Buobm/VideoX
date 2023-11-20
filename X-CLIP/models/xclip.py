@@ -83,22 +83,22 @@ class XCLIP(CLIP):
         self.prompts_visual_ln = LayerNorm(vision_width)
         self.prompts_visual_proj = nn.Parameter(torch.randn(vision_width, embed_dim))
         # Add classifier if use_text_prompts is False
-        dropout_rate = 0.2
+        dropout_rate = 0.3
         self.classifier = nn.Sequential(
             nn.Linear(embed_dim, embed_dim),
             nn.BatchNorm1d(embed_dim),
             nn.LeakyReLU(),
             nn.Dropout(dropout_rate),
 
-            nn.Linear(embed_dim, embed_dim),
-            nn.BatchNorm1d(embed_dim),
-            nn.LeakyReLU(),
-            nn.Dropout(dropout_rate),
+            # nn.Linear(embed_dim, embed_dim),
+            # nn.BatchNorm1d(embed_dim),
+            # nn.LeakyReLU(),
+            # nn.Dropout(dropout_rate),
 
-            nn.Linear(embed_dim, embed_dim),
-            nn.BatchNorm1d(embed_dim),
-            nn.LeakyReLU(),
-            nn.Dropout(dropout_rate),
+            # nn.Linear(embed_dim, embed_dim),
+            # nn.BatchNorm1d(embed_dim),
+            # nn.LeakyReLU(),
+            # nn.Dropout(dropout_rate),
 
             nn.Linear(embed_dim, num_classes)
         )
