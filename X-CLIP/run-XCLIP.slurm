@@ -27,6 +27,8 @@ source myenv/bin/activate
 
 echo "GPUs allocated by SLURM: ${CUDA_VISIBLE_DEVICES}"
 
+FREE_PORT=$(python -c 'import socket; sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM); sock.bind(("", 0)); print(sock.getsockname()[1]); sock.close()')
+echo "Free Port: ${FREE_PORT}"
 #tensorboard --logdir output/tonsorboard/ --bind_all --port=9876
 
 #tensorboard --logdir output/tonsorboard/
