@@ -42,7 +42,8 @@ echo "Free Port: ${FREE_PORT}"
 # --opts TEST.NUM_CLIP 4 TEST.NUM_CROP 3
 
 #Train X-CLIP
-python -m torch.distributed.launch --nproc_per_node=1 main.py \
--cfg configs/HoloAssist/16_16.yaml \
---output /cluster/scratch/buobm/X-CLIP_Output/HoloAssist \
-#--resume /cluster/scratch/buobm/X-CLIP_Output/best.pth
+python -m torch.distributed.launch --nproc_per_node=4 --master_port=$FREE_PORT main.py  \
+-cfg configs/k400/32_8.yaml \
+--output /cluster/scratch/buobm/X-CLIP_Output/k400 \
+# --only_test \
+# --resume /cluster/scratch/buobm/X-CLIP_Output/HoloAssist/best.pth
