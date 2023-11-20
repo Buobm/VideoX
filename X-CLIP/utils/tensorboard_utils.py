@@ -248,7 +248,7 @@ class ConfusionMatrixLogger:
         self.pred_labels = []
         
 
-def get_hparams(config, max_accuracy):
+def get_hparams(config, acc1, acc5):
     # Extract hyperparameters
     hparams = {
         'ARCH': config.MODEL.ARCH,
@@ -283,6 +283,7 @@ def get_hparams(config, max_accuracy):
     }
     # Metrics
     metrics = {
-        'hparam/accuracy': max_accuracy
+        'hparam/accuracy@1': acc1,
+        'hparam/accuracy@5': acc5
     }
     return hparams, metrics
