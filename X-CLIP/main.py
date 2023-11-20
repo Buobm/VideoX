@@ -105,9 +105,9 @@ def main(config):
     #perform_tsne(model, text_labels, train_data.classes, writer)
 
     if config.TEST.ONLY_TEST:
-        acc1 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch=0, confusion_matrix_log=True)
+        acc1, acc5 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch=0, confusion_matrix_log=True)
         logger.info(f"Accuracy of the network on the {len(val_data)} test videos: {acc1:.1f}%")
-        parameters, metric = get_hparams(config,acc1)
+        parameters, metric = get_hparams(config,acc1, acc5)
         writer.add_hparams(parameters, metric)
         return
 
@@ -116,7 +116,7 @@ def main(config):
         train_loader.sampler.set_epoch(epoch)
         train_one_epoch(epoch, model, criterion, optimizer, lr_scheduler, train_loader, text_labels, config, mixup_fn, acc1)
 
-        acc1 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch=epoch)
+        acc1, acc5 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch=epoch)
         logger.info(f"Accuracy of the network on the {len(val_data)} test videos: {acc1:.1f}%")
         is_best = acc1 > max_accuracy
         max_accuracy = max(max_accuracy, acc1)
@@ -129,9 +129,9 @@ def main(config):
     # config.TEST.NUM_CROP = 3
     # config.freeze()
     train_data, val_data, train_loader, val_loader = build_dataloader(logger, config)
-    acc1 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch= config.TRAIN.EPOCHS + 1, confusion_matrix_log=True)
+    acc1, acc5 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch= config.TRAIN.EPOCHS + 1, confusion_matrix_log=True)
     logger.info(f"Accuracy of the network on the {len(val_data)} test videos: {acc1:.1f}%")
-    parameters, metric = get_hparams(config,acc1)
+    parameters, metric = get_hparams(config,acc1, acc5)
     writer.add_hparams(parameters, metric)
 
 def train_one_epoch(epoch, model, criterion, optimizer, lr_scheduler, train_loader, text_labels, config, mixup_fn, val_acc):
@@ -275,7 +275,7 @@ def validate(val_loader, text_labels, model, config, train_data, epoch=0, confus
         confusion_matrix_logger.generate_confusion_matrix(writer, epoch)
     metrics_logger.write_to_tensorboard(writer, epoch)
     metrics_logger.reset()
-    return acc1_meter.avg
+    return acc1_meter.avg, acc5_meter.avg
 
 if __name__ == '__main__':
     print("Starting X-CLIP")
