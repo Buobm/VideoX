@@ -69,6 +69,11 @@ def load_checkpoint(config, model, optimizer, lr_scheduler, logger):
 
         msg = model.load_state_dict(load_state_dict, strict=False)
         logger.info(f"resume model: {msg}")
+        if config.MODEL.FINETUNE:
+            logger.info(f"finetuning: only weights loaded")
+            del checkpoint
+            torch.cuda.empty_cache()
+            return 0, 0.
 
         try:
             optimizer.load_state_dict(checkpoint['optimizer'])
