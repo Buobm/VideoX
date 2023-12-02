@@ -1860,6 +1860,14 @@ class VideoClip:
 
             start_frame = int(np.floor(start_timestamp * fps))
             end_frame = int(np.floor(end_timestamp * fps))
+            if start_frame > end_frame:
+                name = results["filename"]
+                print(f"File: {name}, start: {start_timestamp}, end: {end_timestamp}")
+                temp = start_frame
+                start_frame = end_frame
+                end_frame = temp
+
+            end_frame = min(end_frame, results['total_frames'] - 1)
 
             # Directly read only the required frames
             frames = [vr[idx].asnumpy() for idx in range(start_frame, end_frame + 1)]
