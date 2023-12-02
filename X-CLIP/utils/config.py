@@ -30,6 +30,7 @@ _C.MODEL.DROP_PATH_RATE = 0.
 _C.MODEL.PRETRAINED = None
 _C.MODEL.RESUME = None
 _C.MODEL.FIX_TEXT = True
+_C.MODEL.FINETUNE = False
 
 # -----------------------------------------------------------------------------
 # Training settings
