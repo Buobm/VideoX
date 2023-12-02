@@ -102,7 +102,7 @@ def main(config):
 
     text_labels = generate_text(train_data)
     
-    #perform_tsne(model, text_labels, train_data.classes, writer)
+    # perform_tsne(model, text_labels, train_data.classes, writer, tag = f"Labels {config.MODEL.ARCH}")
 
     if config.TEST.ONLY_TEST:
         acc1, acc5 = validate(val_loader, text_labels, model, config, train_data=train_data, epoch=0, confusion_matrix_log=True)
@@ -308,7 +308,9 @@ if __name__ == '__main__':
     logger.info(f"working dir: {config.OUTPUT}")
     global writer
     current_date = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    writer = SummaryWriter(log_dir=config.OUTPUT + '/tensorboard/' +"run_"+ current_date)
+    run_name = config.MODEL.ARCH + "__" + str(config.DATA.NUM_FRAMES)
+    run_name = run_name.replace("/", "_")
+    writer = SummaryWriter(log_dir=config.OUTPUT + '/tensorboard/' + run_name + "_" + current_date)
     
     # save config 
     if dist.get_rank() == 0:
