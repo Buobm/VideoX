@@ -8,6 +8,8 @@ DATA:
     LABEL_LIST: 'labels/kinetics_400_labels.csv'
 MODEL:
     ARCH: ViT-B/32
+    FIX_TEXT: False
+    USE_TEXT_PROMPTS: False
 TRAIN:
     EPOCHS: 40
     WARMUP_EPOCHS: 5
