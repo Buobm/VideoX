@@ -36,7 +36,6 @@ def set_weight_decay(model, skip_list=(), skip_keywords=(), weight_decay=0.001, 
 def fix_text(model):
     for name, param in model.named_parameters():
         if "visual." in name or "mit" in name or "prompts" in name or "classifier" in name:
-        if "visual." in name or "mit" in name or "prompts" in name or "classifier" in name:
             continue
         else:
             param.requires_grad=False
