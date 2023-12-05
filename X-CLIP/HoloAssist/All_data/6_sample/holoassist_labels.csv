@@ -1,0 +1,1005 @@
+id,name
+0,lift gopro
+1,grab battery
+2,pull battery
+3,open gopro
+4,place sd card
+5,place battery
+6,push battery door
+7,grab mounting peg
+8,place mounting peg
+9,grab handheld grip
+10,assemble handheld grip
+11,drop handheld grip
+12,screw handheld grip
+13,unscrew handheld grip
+14,withdraw mounting peg
+15,open box
+16,place handheld grip
+17,place gopro
+18,withdraw battery
+19,drop sd card
+20,grab sd card
+21,turn_on gopro
+22,turn_off gopro
+23,grab strap
+24,inspect strap
+25,lift mounting peg
+26,align mounting peg
+27,withdraw strap
+28,withdraw gopro
+29,push screw
+30,withdraw tripod
+31,place tripod
+32,press battery door
+33,lift battery door
+34,hold gopro
+35,push sd card
+36,pull sd card
+37,lift sd card
+38,rotate sd card
+39,press battery
+40,rotate battery
+41,tap button
+42,pull mounting peg
+43,insert gopro
+44,pull gopro
+45,lift battery
+46,lift strap
+47,lift handheld grip
+48,open mounting peg
+49,place strap
+50,lift screw
+51,assemble gopro
+52,pull screw
+53,rotate strap
+54,mount gopro
+55,align gopro
+56,validate gopro
+57,inspect battery door
+58,pull battery door
+59,grab battery door
+60,place battery door
+61,flip sd card
+62,withdraw battery door
+63,assemble battery door
+64,drop gopro
+65,hold button
+66,screw gopro
+67,inspect screw
+68,unscrew gopro
+69,lift tripod
+70,close mounting peg
+71,screw strap
+72,unscrew strap
+73,disassemble gopro
+74,disassemble handheld grip
+75,unscrew tripod
+76,touch gopro
+77,press gopro
+78,inspect battery
+79,close gopro
+80,turn gopro
+81,align sd card
+82,inspect sd card
+83,press sd card
+84,hold strap
+85,align screw
+86,rotate screw
+87,withdraw handheld grip
+88,rotate handheld grip
+89,grab tripod
+90,inspect tripod
+91,insert mounting peg
+92,screw mounting peg
+93,unscrew mounting peg
+94,hold handheld grip
+95,touch touch screen
+96,press touch screen
+97,drop strap
+98,unlock battery door
+99,push battery
+100,slide sd card
+101,open mount tabs
+102,assemble strap
+103,disassemble strap
+104,assemble tripod
+105,align handheld grip
+106,assemble mounting peg
+107,lock battery door
+108,grab mount tabs
+109,exchange battery
+110,exchange sd card
+111,flip gopro
+112,drop screw
+113,inspect mounting peg
+114,inspect handheld grip
+115,slide battery door
+116,adjust battery door
+117,lock sd card
+118,turn_on button
+119,hold battery
+120,insert battery door
+121,hold sd card
+122,align battery door
+123,insert tripod
+124,insert handheld grip
+125,pull mount tabs
+126,flip battery
+127,touch button
+128,screw tripod
+129,drop battery
+130,touch battery
+131,push gopro
+132,open sd card
+133,insert strap
+134,turn screw
+135,drop battery door
+136,align strap
+137,unscrew bolt
+138,screw bolt
+139,place bolt
+140,place furniture
+141,hold battery door
+142,close handheld grip
+143,push button
+144,drop hex nut
+145,lift hex nut
+146,press power button
+147,open leg
+148,inspect button
+149,slide screw
+150,inspect box
+151,align battery
+152,align bolt
+153,hold bolt
+154,touch sd card
+155,drop tripod
+156,hold screw
+157,assemble screw
+158,pull button
+159,click button
+160,turn_off button
+161,grab box
+162,touch battery door
+163,touch screw
+164,slide strap
+165,grab base
+166,place base
+167,inspect base
+168,close box
+169,place hex nut
+170,assemble sd card
+171,point button
+172,pull strap
+173,press release button
+174,pull joy con controller
+175,push release button
+176,grab comfort grip
+177,lift joy con controller
+178,rotate comfort grip
+179,insert joy con controller
+180,inspect joy con controller
+181,drop comfort grip
+182,hold joy con controller
+183,lift joy con strap
+184,insert joy con strap
+185,drop joy con controller
+186,press joy con strap lock
+187,press joy con controller
+188,unlock joy con strap lock
+189,grab joy con strap
+190,withdraw joy con strap
+191,rotate nintendo switch
+192,open game card
+193,press nintendo switch
+194,withdraw game card
+195,insert game card
+196,lift nintendo switch
+197,turn_on nintendo switch
+198,inspect comfort grip
+199,flip nintendo switch
+200,place comfort grip
+201,disassemble joy con controller
+202,disassemble joy con strap
+203,touch nintendo switch
+204,hold nintendo switch
+205,open nintendo switch
+206,open game slot
+207,close game slot
+208,place game card
+209,turn_off nintendo switch
+210,slide joy con controller
+211,flip comfort grip
+212,drop nintendo switch
+213,lift comfort grip
+214,drop joy con strap
+215,hold joy con strap
+216,slide joy con strap
+217,rotate joy con controller
+218,align joy con strap
+219,flip joy con controller
+220,push joy con strap
+221,pull joy con strap lock
+222,pull kickstand
+223,grab game card
+224,lift game card
+225,pull game card
+226,press game card
+227,inspect game card
+228,push game card
+229,close game card
+230,assemble joy con strap
+231,lock joy con strap lock
+232,open kickstand
+233,open lid
+234,close lid
+235,touch kickstand
+236,drop game card
+237,close sd card
+238,align joy con controller
+239,pull joy con strap
+240,push joy con strap lock
+241,rotate joy con strap
+242,lock joy con controller
+243,lock joy con strap
+244,unlock joy con controller
+245,stand nintendo switch
+246,close kickstand
+247,hold comfort grip
+248,turn nintendo switch
+249,place joy con strap
+250,unlock button
+251,slide nintendo switch
+252,push kickstand
+253,flip joy con strap
+254,pull lid
+255,inspect touch screen
+256,slide button
+257,place touch screen
+258,pull kickstand lock
+259,grab touch screen
+260,open cover
+261,close cover
+262,inspect kickstand
+263,push joy con controller
+264,inspect joy con strap
+265,tap touch screen
+266,click touch screen
+267,grab kickstand
+268,withdraw nintendo switch
+269,exchange joy con controller
+270,close nintendo switch
+271,push power button
+272,unlock joy con strap
+273,press cover
+274,pull cover
+275,grab dslr
+276,lift dslr
+277,disassemble lens
+278,place dslr
+279,insert lens
+280,rotate lens
+281,grab lens
+282,turn lens
+283,place lens
+284,lift lens
+285,hold dslr
+286,flip dslr
+287,inspect lens
+288,grab lens cover
+289,touch release button
+290,withdraw lens cover
+291,place lens cover
+292,rotate lens cover
+293,withdraw lens
+294,assemble lens
+295,assemble lens cover
+296,hold lens cover
+297,press lens cover
+298,grab battery lock
+299,press battery lock
+300,insert lens cover
+301,slide power button
+302,pull battery lock
+303,turn dslr
+304,hold lens
+305,turn_on dslr
+306,turn_off dslr
+307,open sd slot
+308,close sd slot
+309,touch sd slot
+310,press lens
+311,pull lens
+312,push lens
+313,touch power button
+314,lock lens
+315,grab sd slot
+316,touch lens
+317,touch lens cover
+318,align lens
+319,lift lens cover
+320,adjust lens
+321,push battery lock
+322,screw lens
+323,turn lens cover
+324,open battery lock
+325,pull sd slot
+326,push lens cover
+327,pull power button
+328,close lens cover
+329,push sd slot
+330,rotate button
+331,press rotary switch
+332,open lens cover
+333,grab lens caps
+334,lock box
+335,pull m6 body lock
+336,lock box lock
+337,withdraw wheel
+338,insert wheel
+339,lock wheel
+340,pull box lock
+341,unlock box lock
+342,unlock box
+343,inspect wheel
+344,align wheel
+345,lift base
+346,assemble base
+347,insert m6 battery
+348,grab m6 head
+349,insert m6 head
+350,inspect m6 head
+351,withdraw lens caps
+352,insert lens caps
+353,clean lens
+354,grab handle
+355,place lens caps
+356,lift m6 head
+357,place m6 head
+358,grab m6 body
+359,inspect m6 body
+360,lift m6 body
+361,lift wheel
+362,unlock wheel
+363,grab box lock
+364,place wheel
+365,pull wheel
+366,drop wheel
+367,turn wheel
+368,rotate wheel
+369,assemble wheel
+370,push wheel
+371,pull handle
+372,withdraw belt
+373,hold wheel
+374,push lever
+375,place m6 body
+376,close box lock
+377,pull lever
+378,hold handle
+379,grab cup
+380,place cup
+381,approach button
+382,press start button
+383,align cup
+384,grab coffee
+385,hold coffee
+386,place coffee
+387,withdraw cup lid
+388,place cup lid
+389,open cup sleeve
+390,open fridge
+391,grab milk
+392,hold milk
+393,load milk
+394,place milk
+395,grab stir stick
+396,withdraw stir stick
+397,mix/stir milk
+398,grab lever
+399,rotate box lock
+400,place m6 battery
+401,touch printer
+402,grab paper tray
+403,pull printer
+404,grab printer
+405,open paper tray
+406,withdraw printer
+407,align paper stack
+408,pull paper tray
+409,insert paper stack
+410,open printer
+411,place paper stack
+412,close printer
+413,open copy gate
+414,grab copy
+415,place copy
+416,open cartridge gate
+417,inspect printer
+418,withdraw ink cartridge
+419,place ink cartridge
+420,inspect ink cartridge
+421,insert ink cartridge
+422,close cartridge gate
+423,drop ink cartridge
+424,rotate ink cartridge
+425,close paper tray
+426,lift paper stack
+427,lift paper tray
+428,grab extending tray
+429,open extending tray
+430,lift copy gate
+431,flip paper stack
+432,close copy gate
+433,lift copy
+434,inspect paper tray
+435,grab cartridge gate
+436,pull ink cartridge
+437,lift ink cartridge
+438,push paper stack
+439,push tab
+440,inspect paper stack
+441,align copy
+442,hold paper stack
+443,drop paper stack
+444,hold cartridge gate
+445,withdraw paper stack
+446,slide paper tray
+447,load paper stack
+448,press tab
+449,press ink cartridge
+450,assemble ink cartridge
+451,push ink cartridge
+452,push paper tray
+453,pull cartridge gate
+454,touch paper tray
+455,rotate printer
+456,pull extending tray
+457,align paper tray
+458,align tray shield
+459,grab copy gate
+460,touch ink cartridge
+461,open tray shield
+462,close extending tray
+463,inspect cartridge gate
+464,insert paper tray
+465,align ink cartridge
+466,rotate paper stack
+467,close tray shield
+468,pull tray shield
+469,hold paper tray
+470,lift tray shield
+471,hold copy gate
+472,push extending tray
+473,push tray shield
+474,press copy
+475,pull paper stack
+476,disassemble ink cartridge
+477,withdraw copy
+478,hold printer
+479,slide tab
+480,hold ink cartridge
+481,touch cartridge gate
+482,slide ink cartridge
+483,load paper tray
+484,touch paper stack
+485,press copy button
+486,withdraw black ink cartridge
+487,place black ink cartridge
+488,push black ink cartridge
+489,exchange ink cartridge
+490,grab cover
+491,approach paper tray
+492,approach paper stack
+493,approach cartridge gate
+494,approach ink cartridge
+495,approach printer
+496,press moon button
+497,close drawer
+498,press home button
+499,approach touch screen
+500,open drawer
+501,shift lever
+502,grab shift arm
+503,lift shift arm
+504,insert shift arm
+505,push shift arm
+506,approach bolt
+507,approach washer
+508,insert washer
+509,disassemble washer
+510,grab ratchet
+511,insert ratchet
+512,withdraw ratchet
+513,inspect ratchet
+514,slide ratchet adjuster
+515,place ratchet
+516,grab quality control bench
+517,place quality control bench
+518,grab remote
+519,hold remote
+520,place remote
+521,withdraw bolt
+522,withdraw shift arm
+523,touch lever
+524,rotate shift arm
+525,lift washer
+526,inspect bolt
+527,disassemble bolt
+528,rotate ratchet
+529,press quality control bench
+530,lift remote
+531,rotate remote
+532,press bolt
+533,hold washer
+534,lift bolt
+535,lift ratchet
+536,hold ratchet
+537,drop washer
+538,drop bolt
+539,rotate washer
+540,approach lever
+541,hold shift arm
+542,inspect washer
+543,grab spanner wrench
+544,withdraw washer
+545,unlock front panel door
+546,open front panel door
+547,inspect belt
+548,hold belt
+549,drop belt
+550,grab belt
+551,lift belt
+552,assemble belt
+553,close front panel door
+554,lock front panel door
+555,place belt
+556,approach belt
+557,approach wheel
+558,touch wheel
+559,touch box
+560,touch circuit breaker
+561,grab circuit breaker
+562,withdraw circuit breaker
+563,hold circuit breaker
+564,place circuit breaker
+565,open toolbox
+566,lift circuit breaker
+567,insert circuit breaker
+568,press reset button
+569,close toolbox
+570,rotate circuit breaker
+571,push reset button
+572,inspect circuit breaker
+573,approach toolbox
+574,grab toolbox
+575,align circuit breaker
+576,assemble circuit breaker
+577,pull circuit breaker
+578,approach circuit breaker
+579,push circuit breaker
+580,withdraw cup
+581,lift cup
+582,grab cup lid
+583,hold cup
+584,close fridge
+585,pour milk
+586,flip tray
+587,grab drip tray
+588,hold drip tray
+589,withdraw drip tray
+590,clean drip tray
+591,pour drip tray
+592,assemble drip tray
+593,place drip tray
+594,flip drip tray
+595,place cover
+596,hold coffee bean bag
+597,open coffee bean bag
+598,place coffee bean bag
+599,mix/stir coffee
+600,pull dispenser
+601,lift drip tray
+602,lift dispenser
+603,pull drip tray
+604,withdraw capsule container
+605,rotate drip tray
+606,place capsule container
+607,empty drip tray
+608,insert drip tray
+609,grab sugar packet
+610,grab bag
+611,grab bean hopper
+612,open bean hopper
+613,grab coffee bean bag
+614,lift coffee bean bag
+615,rotate coffee bean bag
+616,pour coffee bean bag
+617,close bean hopper
+618,drop coffee bean bag
+619,open milk
+620,close milk
+621,lift bean hopper
+622,slide cup
+623,drop drip tray
+624,push drip tray
+625,open cup lid
+626,close cup lid
+627,grab spoon
+628,push cover
+629,load coffee bean bag
+630,place spoon
+631,inspect drip tray
+632,inspect espresso machine
+633,hold base
+634,grab dispenser
+635,lift cover
+636,lift spoon
+637,lift milk
+638,align drip tray
+639,push cup lid
+640,lift cup lid
+641,withdraw cover
+642,assemble cover
+643,place bean hopper
+644,insert cover
+645,insert capsule container
+646,place cream
+647,place frame
+648,withdraw frame
+649,grab frame
+650,assemble frame
+651,flip cover
+652,grab cable power supply
+653,withdraw cable power supply
+654,withdraw hdmi cable
+655,grab computer tower
+656,lift computer tower
+657,place computer tower
+658,flip computer tower
+659,open computer tower
+660,touch computer tower
+661,press ram tab
+662,withdraw ram
+663,hold ram
+664,place ram
+665,grab ram
+666,align ram
+667,insert ram
+668,rotate ram
+669,close computer tower
+670,grab graphic card
+671,inspect computer tower
+672,inspect ram tab
+673,grab computer tab
+674,press computer tab
+675,inspect computer tab
+676,inspect graphic card
+677,withdraw graphic card
+678,place graphic card
+679,insert graphic card
+680,assemble graphic card
+681,grab hdmi cable
+682,assemble hdmi cable
+683,assemble cable power supply
+684,slide computer tower
+685,rotate computer tower
+686,lift computer tab
+687,push computer tab
+688,lift graphic card
+689,lock graphic card
+690,touch frame
+691,withdraw ram tab
+692,place ram tab
+693,lock ram tab
+694,inspect cover
+695,insert cable power supply
+696,pull computer tower
+697,pull computer tab
+698,pull graphic card
+699,press graphic card
+700,assemble ram
+701,push ram
+702,inspect ram
+703,hold computer tower
+704,insert hdmi cable
+705,place cable power supply
+706,touch ram tab
+707,push ram tab
+708,rotate cover
+709,push computer tower
+710,align computer tower
+711,turn computer tower
+712,touch graphic card
+713,push graphic card
+714,touch computer tab
+715,touch ram
+716,place hdmi cable
+717,align cover
+718,lift ram
+719,stand computer tower
+720,pull ram
+721,touch cpu cooler
+722,unlock computer tab
+723,lock computer tab
+724,align graphic card
+725,unlock ram tab
+726,close ram tab
+727,grab ram tab
+728,press ram
+729,unlock ram
+730,hold computer tab
+731,open bag
+732,approach tray
+733,inspect tray
+734,rotate hex socket head
+735,lift hex socket head
+736,approach allen wrench
+737,lift tray
+738,inspect hex socket head
+739,shift leg
+740,hold tray
+741,stand tray
+742,align hex socket head
+743,press hex socket head
+744,align allen wrench
+745,disassemble allen wrench
+746,shift tray
+747,assemble tray
+748,hold hex socket head
+749,screw allen wrench
+750,lift allen wrench
+751,pull hex socket head
+752,disassemble tray
+753,pull allen wrench
+754,approach screwdriver
+755,hold screwdriver
+756,assemble hex socket head
+757,hold allen wrench
+758,withdraw hex socket head
+759,hold nightstand
+760,place nightstand
+761,align nightstand
+762,slide tray
+763,withdraw leg
+764,place bag
+765,screw leg
+766,touch leg
+767,flip leg
+768,inspect nightstand
+769,withdraw tray
+770,flip nightstand
+771,insert tray
+772,pull leg
+773,validate hex socket head
+774,approach nightstand
+775,rotate hexagonal wrench
+776,grab nightstand
+777,stand nightstand
+778,lift nightstand
+779,slide leg
+780,slide hex socket head
+781,slide allen wrench
+782,pull nightstand
+783,exchange leg
+784,assemble allen wrench
+785,slide screwdriver
+786,exchange allen wrench
+787,pull tray
+788,mount leg
+789,drop tray
+790,drop leg
+791,flip allen wrench
+792,inspect allen wrench
+793,validate leg
+794,insert leg
+795,rotate screwdriver
+796,exchange hex socket head
+797,screw tray
+798,unscrew allen wrench
+799,rotate base
+800,mount tray
+801,lift screwdriver
+802,screw screwdriver
+803,align base
+804,stand leg
+805,push hex socket head
+806,push leg
+807,press leg
+808,unscrew leg
+809,disassemble nightstand
+810,slide bag
+811,align screwdriver
+812,grab utility cart
+813,flip utility cart
+814,place utility cart
+815,approach hexagonal wrench
+816,approach grid tray
+817,place hexagon cap nut
+818,withdraw hexagon cap nut
+819,approach bracket
+820,approach utility cart
+821,slide bracket
+822,unscrew hexagonal wrench
+823,withdraw bracket
+824,lift grid tray
+825,withdraw grid tray
+826,lift hexagonal wrench
+827,stack/pile grid tray
+828,flip grid tray
+829,lift utility cart
+830,rotate half frame
+831,inspect utility cart
+832,stack/pile bracket
+833,push utility cart
+834,stack/pile tray
+835,stack/pile leg
+836,grab half frame
+837,withdraw half frame
+838,place half frame
+839,unscrew bracket
+840,disassemble bracket
+841,withdraw hex nut
+842,disassemble half frame
+843,disassemble wheel
+844,disassemble hexagon cap nut
+845,push grid tray
+846,pull grid tray
+847,disassemble grid tray
+848,approach hexagon cap nut
+849,hold half frame
+850,drop hexagon cap nut
+851,hold grid tray
+852,approach half frame
+853,inspect half frame
+854,lift half frame
+855,slide grid tray
+856,drop bracket
+857,drop grid tray
+858,approach screw
+859,drop half frame
+860,turn leg
+861,split half frame
+862,split leg
+863,lift bracket
+864,insert hexagon cap nut
+865,flip hexagonal wrench
+866,flip half frame
+867,turn utility cart
+868,align bracket
+869,hold bracket
+870,slide hexagonal wrench
+871,slide wheel
+872,drop hexagonal wrench
+873,slide utility cart
+874,rotate grid tray
+875,align grid tray
+876,rotate frame
+877,grab hex nut
+878,drop screwdriver
+879,unscrew screwdriver
+880,approach hex nut
+881,disassemble hex nut
+882,turn hexagonal wrench
+883,disassemble hexagonal wrench
+884,hold hexagon cap nut
+885,hold hexagonal wrench
+886,align hexagon cap nut
+887,assemble grid tray
+888,pull utility cart
+889,touch grid tray
+890,inspect bracket
+891,touch bracket
+892,unscrew half frame
+893,hold utility cart
+894,approach frame
+895,slide frame
+896,disassemble screwdriver
+897,align hexagonal wrench
+898,stand utility cart
+899,align half frame
+900,slide half frame
+901,insert hex nut
+902,validate hexagon cap nut
+903,insert grid tray
+904,disassemble frame
+905,inspect hexagon cap nut
+906,touch hexagon cap nut
+907,rotate bracket
+908,screw bracket
+909,inspect screwdriver
+910,assemble half frame
+911,withdraw spanner wrench
+912,insert spanner wrench
+913,place spanner wrench
+914,turn hexagon cap nut
+915,push bolt
+916,inspect frame
+917,turn hex nut
+918,place circle
+919,align circle
+920,grab circle
+921,flip circle
+922,rotate circle
+923,lift circle
+924,mount circle
+925,inspect tray table
+926,inspect stool
+927,slide stool
+928,flip furniture
+929,approach tray table
+930,assemble circle
+931,rotate tray table
+932,insert circle
+933,approach circle
+934,grab tray table
+935,drop circle
+936,slide tray table
+937,inspect circle
+938,hold circle
+939,lift tray table
+940,align washer
+941,assemble seat
+942,flip seat
+943,align seat
+944,turn hex socket head
+945,turn allen wrench
+946,place tray table
+947,align hex nut
+948,flip stool
+949,place stool
+950,grab stool
+951,inspect hex nut
+952,rotate seat
+953,rotate stool
+954,lift stool
+955,grab seat
+956,hold tray table
+957,exchange screw
+958,hold stool
+959,disassemble circle
+960,place legs
+961,place seat
+962,inspect seat
+963,hold hex nut
+964,withdraw seat
+965,lift seat
+966,disassemble seat
+967,slide seat
+968,approach stool
+969,approach seat
+970,rotate hex nut
+971,screw hexagonal wrench
+972,slide washer
+973,insert seat
+974,assemble bolt
+975,hold seat
+976,unscrew washer
+977,align stool
+978,push seat
+979,lift frame
+980,inspect grid tray
+981,assemble bracket
+982,insert bracket
+983,press screw
+984,screw grid tray
+985,align frame
+986,align spanner wrench
+987,lift hexagon cap nut
+988,disassemble spanner wrench
+989,hold frame
+990,insert half frame
+991,screw frame
+992,insert frame
+993,flip frame
+994,lift spanner wrench
+995,drop spanner wrench
+996,drop frame
+997,press bracket
+998,drive leg
+999,approach spanner wrench
+1000,rotate spanner wrench
+1001,validate grid tray
+1002,flip spanner wrench
+1003,validate frame

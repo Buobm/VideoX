@@ -1,0 +1,227 @@
+id,name
+0,withdraw battery
+1,place battery
+2,exchange gopro
+3,withdraw handheld grip
+4,open battery door
+5,exchange battery
+6,turn_on gopro
+7,turn_off gopro
+8,assemble strap
+9,disassemble strap
+10,disassemble handheld grip
+11,assemble tripod
+12,disassemble tripod
+13,insert battery
+14,withdraw sd card
+15,insert sd card
+16,assemble mounting peg
+17,withdraw gopro
+18,assemble gopro
+19,mount strap
+20,exchange tripod
+21,exchange handheld grip
+22,disassemble gopro
+23,place gopro
+24,inspect gopro
+25,withdraw tripod
+26,assemble handheld grip
+27,place strap
+28,withdraw strap
+29,exchange strap
+30,press button
+31,mount handheld grip
+32,insert screw
+33,mount gopro
+34,place sd card
+35,assemble screw
+36,place screw
+37,exchange joy con controller
+38,stand nintendo switch
+39,exchange game card
+40,turn_on nintendo switch
+41,turn_off nintendo switch
+42,withdraw joy con controller
+43,assemble joy con controller
+44,disassemble joy con controller
+45,disassemble joy con strap
+46,pull kickstand
+47,insert joy con strap
+48,withdraw joy con strap
+49,insert joy con controller
+50,assemble joy con strap
+51,place nintendo switch
+52,exchange comfort grip
+53,open kickstand
+54,press joy con controller
+55,exchange joy con strap
+56,inspect nintendo switch
+57,exchange nintendo switch
+58,place joy con controller
+59,shift joy con controller
+60,disassemble lens
+61,turn_on dslr
+62,turn_off dslr
+63,assemble lens
+64,assemble lens cover
+65,disassemble lens cover
+66,withdraw lens cover
+67,disassemble dslr
+68,open box
+69,withdraw wheel
+70,assemble wheel
+71,assemble m6 body
+72,place m6 head
+73,place lens caps
+74,lift m6 head
+75,disassemble m6 body
+76,disassemble wheel
+77,place wheel
+78,turn_on m6 machine
+79,assemble m6 head
+80,unscrew wheel
+81,place m6 body
+82,pull lever
+83,make coffee
+84,load milk
+85,insert paper stack
+86,make paper stack
+87,exchange ink cartridge
+88,close printer
+89,load paper stack
+90,open paper tray
+91,make copy
+92,pull paper tray
+93,close paper tray
+94,place paper stack
+95,open cartridge gate
+96,turn_on printer
+97,load printer
+98,withdraw paper stack
+99,withdraw ink cartridge
+100,exchange cartridge gate
+101,turn_off printer
+102,inspect ink cartridge
+103,withdraw copy
+104,insert ink cartridge
+105,load paper tray
+106,align paper stack
+107,shift lever
+108,insert shift arm
+109,grab bolt
+110,screw bolt
+111,use remote
+112,unscrew bolt
+113,place bolt
+114,withdraw shift arm
+115,grab washer
+116,grab ratchet
+117,open front panel door
+118,withdraw belt
+119,drop belt
+120,assemble belt
+121,push lever
+122,close front panel door
+123,lock front panel door
+124,place belt
+125,inspect belt
+126,grab belt
+127,unlock front panel door
+128,turn_off circuit breaker
+129,withdraw circuit breaker
+130,assemble circuit breaker
+131,turn_on circuit breaker
+132,reset circuit breaker
+133,grab circuit breaker
+134,place circuit breaker
+135,exchange circuit breaker
+136,disassemble drip tray
+137,load coffee bean
+138,load coffee
+139,empty drip tray
+140,empty tray
+141,disassemble tray
+142,assemble tray
+143,assemble drip tray
+144,load cream
+145,place tray
+146,pour milk
+147,withdraw cable power supply
+148,place computer tower
+149,open computer tower
+150,withdraw ram
+151,insert ram
+152,close computer tower
+153,withdraw hdmi cable
+154,withdraw graphic card
+155,assemble graphic card
+156,assemble cover
+157,insert hdmi cable
+158,inspect computer tower
+159,insert graphic card
+160,withdraw computer tower
+161,insert computer tower
+162,withdraw cover
+163,assemble ram
+164,rotate computer tower
+165,place ram
+166,insert cable power supply
+167,open cover
+168,place cover
+169,lock computer tab
+170,close cover
+171,lift computer tower
+172,inspect nightstand
+173,rotate nightstand
+174,inspect screw
+175,screw tray
+176,place leg
+177,screw leg
+178,inspect tray
+179,align leg
+180,align tray
+181,inspect leg
+182,mount tray
+183,unscrew tray
+184,unscrew leg
+185,disassemble nightstand
+186,place nightstand
+187,disassemble screw
+188,unscrew nightstand
+189,align screw
+190,disassemble grid tray
+191,disassemble half frame
+192,unscrew grid tray
+193,disassemble frame
+194,disassemble bracket
+195,inspect utility cart
+196,rotate utility cart
+197,align grid tray
+198,mount grid tray
+199,place grid tray
+200,unscrew hexagon cap nut
+201,mount leg
+202,place circle
+203,rotate leg
+204,assemble circle
+205,screw circle
+206,assemble base
+207,assemble seat
+208,insert leg
+209,screw hex nut
+210,rotate stool
+211,disassemble circle
+212,unscrew hex nut
+213,disassemble tray table
+214,unscrew circle
+215,disassemble seat
+216,disassemble hex nut
+217,assemble half frame
+218,assemble frame
+219,assemble grid tray
+220,assemble bracket
+221,screw bracket
+222,screw grid tray
+223,screw hexagon cap nut
+224,screw wheel
+225,insert grid tray

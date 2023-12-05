@@ -1,15 +1,15 @@
 #!/bin/bash
 
 #SBATCH --nodes=1
-#SBATCH --ntasks=32
-#SBATCH --gpus-per-node=2
-#SBATCH --gres=gpumem:30g
-#SBATCH --time=02:00:00
+#SBATCH --ntasks=16
+#SBATCH --gpus-per-node=1
+
+#SBATCH --time=00:20:00
 #SBATCH --mem-per-cpu=4000
 #SBATCH --tmp=4000 # per node!!
-#SBATCH --job-name=X-CLIP_16_32_coarse
-#SBATCH --output=X-CLIP_16_32_coarse.out
-#SBATCH --error=X-CLIP_16_32_coarse.err
+#SBATCH --job-name=X-CLIP_32_8_12_view
+#SBATCH --output=X-CLIP_32_8_12_view.out
+#SBATCH --error=X-CLIP_32_8_12_view.err
 #SBATCH --mail-type=BEGIN
 #SBATCH --mail-type=END
 
@@ -46,10 +46,14 @@ echo "Free Port: ${FREE_PORT}"
 # --output /cluster/scratch/buobm/X-CLIP_Output/HoloAssist/enhanced_labels \
 # #Train X-CLIP
 
-python -m torch.distributed.launch --nproc_per_node=2 --master_port=$FREE_PORT main.py  \
--cfg configs/HoloAssist/32_8_nsp_coarse.yaml \
---output /cluster/scratch/buobm/X-CLIP_Output/HoloAssist_nespresso_coarse/3_1_split_train/ViT-B_16_32 #\
-#--resume /cluster/scratch/buobm/X-CLIP_Output/HoloAssist_all_data/4_2_split/ViT-B_32_8/ckpt_epoch_70.pth
+python -m torch.distributed.launch --nproc_per_node=1 --master_port=$FREE_PORT main.py  \
+-cfg configs/HoloAssist/32_8.yaml \
+--output /cluster/scratch/buobm/X-CLIP_Output/HoloAssist_pretrained/ViT-B_32_8/HoloAssist_finetune_12_view_test_only/ \
+--resume /cluster/scratch/buobm/X-CLIP_Output/HoloAssist_pretrained/ViT-B_32_8/HoloAssist_finetune_train_and_test/ckpt_epoch_19.pth \
+--only_test \
+--opts TEST.NUM_CLIP 4 TEST.NUM_CROP 3
+#--resume /cluster/scratch/buobm/X-CLIP_Output/HoloAssist_pretrained/ViT-B_32_8/HoloAssist_finetune_train_and_test/ckpt_epoch_19.pth \
 #--only_test
-# --only_test \original_parameters
-# --resume /cluster/scratch/buobm/X-CLIP_Output/HoloAssist/best.pth
+#--opts TEST.NUM_CLIP 4 TEST.NUM_CROP 3
+#--resume checkpoints/Acc@1_49_Acc@5_76_epoch_29.pth \
+#ref epic kitchen 1.3 top1 acc

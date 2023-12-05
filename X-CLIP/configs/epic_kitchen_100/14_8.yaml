@@ -7,14 +7,14 @@ DATA:
     NUM_CLASSES: 200
     LABEL_LIST: 'epic_kitchen_100/top_200_classes/top_200_class_mapping.csv'
 MODEL:
-    ARCH: ViT-B/32
+    ARCH: ViT-L/14
 TRAIN:
     EPOCHS: 100
     WARMUP_EPOCHS: 5
     WEIGHT_DECAY: 0.001
     LR: 8.e-6
-    BATCH_SIZE: 32
-    ACCUMULATION_STEPS: 2
+    BATCH_SIZE: 8
+    ACCUMULATION_STEPS: 4
     LR_SCHEDULER: 'cosine'
     OPTIMIZER: 'adamw'
     OPT_LEVEL: 'O1'

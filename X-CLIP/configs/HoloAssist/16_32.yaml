@@ -3,7 +3,7 @@ DATA:
     TRAIN_FILE: 'HoloAssist/10_samples/train_data.txt'
     VAL_FILE: 'HoloAssist/10_samples/val_data.txt'
     DATASET: HoloAssist_min_10_samples
-    NUM_FRAMES: 16
+    NUM_FRAMES: 32
     NUM_CLASSES: 93
     LABEL_LIST: 'HoloAssist/10_samples/holoassist_labels_enriched.csv'
 MODEL:
