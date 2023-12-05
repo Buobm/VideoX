@@ -2,9 +2,6 @@ DATA:
     ROOT: '/cluster/project/infk/cvg/students/buobm/datasets/kinetics-400/k400/videos/'
     TRAIN_FILE: '/cluster/project/infk/cvg/students/buobm/datasets/kinetics-400/k400/annotations/train.txt'
     VAL_FILE: '/cluster/project/infk/cvg/students/buobm/datasets/kinetics-400/k400/annotations/test.txt'
-    ROOT: '/cluster/project/infk/cvg/students/buobm/datasets/kinetics-400/k400/videos/'
-    TRAIN_FILE: '/cluster/project/infk/cvg/students/buobm/datasets/kinetics-400/k400/annotations/train.txt'
-    VAL_FILE: '/cluster/project/infk/cvg/students/buobm/datasets/kinetics-400/k400/annotations/test.txt'
     DATASET: kinetics400
     NUM_FRAMES: 8
     NUM_CLASSES: 400

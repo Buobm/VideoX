@@ -63,7 +63,7 @@ def main(config):
                             logger=logger,
                             use_text_prompts=config.MODEL.USE_TEXT_PROMPTS,
                             num_classes= config.DATA.NUM_CLASSES,
-                        )
+                            )
     elif config.MODEL.NAME == 'CLIPMEAN':
         assert config.TEST.ONLY_TEST, "CLIP model can only be used for inference"
         model = clip_mean.CLIPBenchmark(config.MODEL.ARCH) 
