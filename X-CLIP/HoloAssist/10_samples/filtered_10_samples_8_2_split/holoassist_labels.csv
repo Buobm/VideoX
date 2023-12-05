@@ -1,0 +1,91 @@
+id,name
+0,approach water container
+1,open lid
+2,withdraw water container
+3,lift water container
+4,approach faucet
+5,open faucet
+6,load water container
+7,close lid
+8,place water container
+9,rotate coffee machine
+10,grab water container
+11,pull water container
+12,place cup
+13,approach coffee machine
+14,pull lever
+15,open capsule box
+16,lift coffee capsule
+17,insert coffee capsule
+18,grab dispenser
+19,push lever
+20,grab cup
+21,approach button
+22,press button
+23,approach cup
+24,lift cup
+25,grab drip tray
+26,grab coffee machine
+27,withdraw drip tray
+28,disassemble capsule container
+29,lift capsule container
+30,approach garbage bin
+31,open garbage bin
+32,empty capsule container
+33,lift drip tray
+34,assemble capsule container
+35,assemble drip tray
+36,pull drip tray
+37,grab capsule container
+38,flip drip tray
+39,empty drip tray
+40,place drip tray
+41,insert drip tray
+42,approach lever
+43,grab lever
+44,slide coffee machine
+45,close faucet
+46,lift lever
+47,approach coffee capsule
+48,grab coffee capsule
+49,withdraw cup
+50,close garbage bin
+51,approach drip tray
+52,disassemble drip tray
+53,lift lid
+54,load cup
+55,approach capsule container
+56,drop coffee capsule
+57,withdraw capsule container
+58,approach sink
+59,assemble water container
+60,align cup
+61,load coffee
+62,rotate drip tray
+63,hold capsule container
+64,place capsule container
+65,insert capsule container
+66,hold cup
+67,hold lever
+68,pour water
+69,insert water container
+70,close water container
+71,lift tray
+72,place coffee capsule
+73,touch coffee machine
+74,grab glass
+75,close lever
+76,hold drip tray
+77,drop drip tray
+78,inspect coffee machine
+79,open water container
+80,hold water container
+81,push button
+82,slide cup
+83,pull capsule container
+84,push drip tray
+85,inspect drip tray
+86,empty tray
+87,insert tray
+88,grab tray
+89,pull handle

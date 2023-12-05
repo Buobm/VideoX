@@ -1,0 +1,23 @@
+DATA:
+    ROOT: '/cluster/project/infk/cvg/students/buobm/datasets/HoloAssist/videos'
+    TRAIN_FILE: 'HoloAssist/coarse_nespresso/3_1_split/train_data.txt'
+    VAL_FILE: 'HoloAssist/coarse_nespresso/3_1_split/val_and_test_data.txt'
+    DATASET: HoloAssist_nespresso_data_coarse_3_1_split
+    NUM_FRAMES: 8
+    NUM_CLASSES: 32
+    LABEL_LIST: 'HoloAssist/coarse_nespresso/3_1_split/holoassist_labels.csv'
+MODEL:
+    ARCH: ViT-B/16
+    FIX_TEXT: True
+TRAIN:
+    EPOCHS: 100
+    WARMUP_EPOCHS: 5
+    WEIGHT_DECAY: 0.001
+    LR: 8.e-6
+    BATCH_SIZE: 8
+    ACCUMULATION_STEPS: 8
+    LR_SCHEDULER: 'cosine'
+    OPTIMIZER: 'adamw'
+    OPT_LEVEL: 'O1'
+    STEP_SIZE: 10
+    LR_DECAY: 0.1

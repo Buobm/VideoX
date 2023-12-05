@@ -1,0 +1,10 @@
+DATA:
+    ROOT: '/cluster/project/infk/cvg/students/buobm/datasets/HoloAssist/videos'
+    TRAIN_FILE: 'HoloAssist/10_samples/8_2_split/train_data.txt'
+    VAL_FILE: 'HoloAssist/10_samples/8_2_split/test_data.txt'
+    DATASET: HoloAssist_min_10_samples_8_2_split_test_data
+    NUM_FRAMES: 8
+    NUM_CLASSES: 93
+    LABEL_LIST: 'HoloAssist/10_samples/holoassist_labels.csv'
+MODEL:
+    ARCH: ViT-B/32
