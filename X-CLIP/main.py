@@ -160,7 +160,7 @@ def train_one_epoch(epoch, model, criterion, optimizer, lr_scheduler, train_load
         if texts.shape[0] == 1:
             texts = texts.view(1, -1)
         
-        output = model(images)
+        output = model(images, texts)
 
         total_loss = criterion(output, label_id)
         total_loss = total_loss / config.TRAIN.ACCUMULATION_STEPS
@@ -238,7 +238,7 @@ def validate(val_loader, text_labels, model, config, train_data, epoch=0, confus
                 if config.TRAIN.OPT_LEVEL == 'O2':
                     image_input = image_input.half()
                 
-                output = model(image_input)
+                output = model(image_input, text_inputs)
                 
                 similarity = output.view(b, -1).softmax(dim=-1)
                 tot_similarity += similarity
