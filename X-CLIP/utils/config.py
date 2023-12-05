@@ -25,6 +25,7 @@ _C.DATA.LABEL_LIST = 'labels/kinetics_400_labels.csv'
 # Model settings
 # -----------------------------------------------------------------------------
 _C.MODEL = CN()
+_C.MODEL.NAME = 'XCLIP'
 _C.MODEL.ARCH = 'ViT-B/32'
 _C.MODEL.DROP_PATH_RATE = 0.
 _C.MODEL.PRETRAINED = None
