@@ -167,6 +167,11 @@ checkpoints/
 output/
 X-CLIP_env/
 
+#Privacy
+HoloAssist/
+old_HoloAssist/
+
+
 # Output and error files
 *.err
 *.out

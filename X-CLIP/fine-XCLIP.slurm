@@ -3,13 +3,13 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=16
 #SBATCH --gpus-per-node=1
-#SBATCH --gres=gpumem:30g
+#SBATCH --gres=gpumem:20g
 #SBATCH --time=2-00:00:00
 #SBATCH --mem-per-cpu=8000
 #SBATCH --tmp=4000 # per node!!
-#SBATCH --job-name=X-CLIP_32_16_coarse_no_nsp_2
-#SBATCH --output=X-CLIP_32_16_coarse_no_nsp_2.out
-#SBATCH --error=X-CLIP_32_16_coarse_no_nsp_2.err
+#SBATCH --job-name=X-CLIP_32_16_fine_all
+#SBATCH --output=X-CLIP_32_16_fine_all.out
+#SBATCH --error=X-CLIP_32_16_fine_all.err
 #SBATCH --mail-type=BEGIN
 #SBATCH --mail-type=END
 
@@ -47,14 +47,8 @@ echo "Free Port: ${FREE_PORT}"
 # #Train X-CLIP
 
 python -m torch.distributed.launch --nproc_per_node=1 --master_port=$FREE_PORT main.py  \
--cfg configs/HoloAssist/32_16_all_but_nespresso.yaml \
---output /cluster/scratch/buobm/X-CLIP_HoloAssist/all_but_nespresso/all/ViT-B_32__16 \
---resume /cluster/scratch/buobm/X-CLIP_HoloAssist/all_but_nespresso/all/ViT-B_32__16/ckpt_epoch_37.pth
-# --resume /cluster/scratch/buobm/X-CLIP_HoloAssist/all_but_nespresso/all/ViT-B_32__16/ckpt_epoch_37.pth
-#--resume /cluster/scratch/buobm/X-CLIP_HoloAssist/all_data/8_samples/ViT-B_32__16_sentances/ckpt_epoch_46.pth
-#--output /cluster/scratch/buobm/X-CLIP_HoloAssist/all_data/8_samples/ViT-B_32__16_video_only 
-#--output /cluster/scratch/buobm/X-CLIP_HoloAssist/all_but_nespresso/all/ViT-B_32__16
-#--resume /cluster/scratch/buobm/X-CLIP_Output/HoloAssist_all_data/4_2_split/ViT-B_32_8/ckpt_epoch_70.pth
-#--only_test
-# --only_test \original_parameters
-# --resume /cluster/scratch/buobm/X-CLIP_Output/HoloAssist/best.pth
+-cfg configs/HoloAssist/32_16_fine_all.yaml \
+--output /cluster/scratch/buobm/X-CLIP_HoloAssist/fine/all_data/all/ViT-B_32__16
+#--resume /cluster/scratch/buobm/X-CLIP_HoloAssist/fine/all_data/8_samples/ViT-B_32__16_sentances/ckpt_epoch_46.pth
+#--output /cluster/scratch/buobm/X-CLIP_HoloAssist/fine/all_data/8_samples/ViT-B_32__16_video_only 
+#--output /cluster/scratch/buobm/X-CLIP_HoloAssist/fine/all_but_nespresso/all/ViT-B_32__16
