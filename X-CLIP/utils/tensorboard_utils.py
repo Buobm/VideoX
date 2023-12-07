@@ -253,12 +253,14 @@ class ConfusionMatrixLogger:
 def get_hparams(config, acc1, acc5):
     # Extract hyperparameters
     hparams = {
+        'NAME': config.MODEL.NAME,
         'ARCH': config.MODEL.ARCH,
         'DROP_PATH_RATE': config.MODEL.DROP_PATH_RATE,
         'FIX_TEXT': config.MODEL.FIX_TEXT,
         'PRETRAINED': config.MODEL.PRETRAINED,
         'RESUME': config.MODEL.RESUME,
         'USE_TEXT_PROMPTS': config.MODEL.USE_TEXT_PROMPTS,
+        'FINETUNE': config.MODEL.FINETUNE,
         'NUM_FRAMES': config.DATA.NUM_FRAMES,
         'NUM_CLASSES': config.DATA.NUM_CLASSES,
         'NUM_CROPS': config.TEST.NUM_CROP,
