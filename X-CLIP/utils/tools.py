@@ -67,14 +67,20 @@ def load_checkpoint(config, model, optimizer, lr_scheduler, logger):
         checkpoint = torch.load(config.MODEL.RESUME, map_location='cpu')
         load_state_dict = checkpoint['model']
 
-        msg = model.load_state_dict(load_state_dict, strict=False)
-        logger.info(f"resume model: {msg}")
+        
         if config.MODEL.FINETUNE:
+            if config.MODEL.USE_TEXT_PROMPTS:
+                ignore_keys = ['classifier.4.weight', 'classifier.4.bias']
+                load_state_dict = {k: v for k, v in load_state_dict.items() if k not in ignore_keys}
+            msg = model.load_state_dict(load_state_dict, strict=False)
+            logger.info(f"resume model: {msg}")
             logger.info(f"finetuning: only weights loaded")
             del checkpoint
             torch.cuda.empty_cache()
             return 0, 0.
-
+        
+        msg = model.load_state_dict(load_state_dict, strict=False)
+        logger.info(f"resume model: {msg}")
         try:
             optimizer.load_state_dict(checkpoint['optimizer'])
             lr_scheduler.load_state_dict(checkpoint['lr_scheduler'])
@@ -116,3 +122,7 @@ def generate_text(data):
     classes = torch.cat([clip.tokenize(text_aug.format(c), context_length=77) for i, c in data.classes])
 
     return classes
+
+def generate_class_list(data):
+    class_names = [c for i, c in data.classes]
+    return class_names

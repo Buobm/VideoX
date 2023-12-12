@@ -20,6 +20,7 @@ _C.DATA.NUM_FRAMES = 8
 _C.DATA.NUM_CLASSES = 400
 _C.DATA.MULTI_CLASS = False
 _C.DATA.LABEL_LIST = 'labels/kinetics_400_labels.csv'
+_C.DATA.SAVE_OUTPUT_LOCATION = None
 
 # -----------------------------------------------------------------------------
 # Model settings

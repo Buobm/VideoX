@@ -9,7 +9,7 @@ import shutil
 from pathlib import Path
 from utils.config import get_config
 from utils.optimizer import build_optimizer, build_scheduler, update_learning_rate
-from utils.tools import AverageMeter, reduce_tensor, epoch_saving, load_checkpoint, generate_text, auto_resume_helper
+from utils.tools import AverageMeter, reduce_tensor, epoch_saving, load_checkpoint, generate_text, auto_resume_helper, generate_class_list
 from datasets.build import build_dataloader, img_norm_cfg
 from utils.logger import create_logger
 from utils.tensorboard_utils import ClassificationMetricsLogger, get_hparams, add_imagages_to_tensorboard, log_system_resources, perform_tsne, ConfusionMatrixLogger
@@ -23,6 +23,7 @@ from timm.loss import LabelSmoothingCrossEntropy, SoftTargetCrossEntropy
 from datasets.blending import CutmixMixupBlending
 from utils.config import get_config
 from models import xclip, clip_mean
+from utils.result_data_set_generation import update_data, save_to_json
 
 
 
@@ -216,13 +217,14 @@ def train_one_epoch(epoch, model, criterion, optimizer, lr_scheduler, train_load
 @torch.no_grad()
 def validate(val_loader, text_labels, model, config, train_data, epoch=0, confusion_matrix_log=True):
     model.eval()
+    all_data = []
     
     acc1_meter, acc5_meter = AverageMeter(), AverageMeter()
     # Initialize the classification logger
     metrics_logger = ClassificationMetricsLogger(num_classes=config.DATA.NUM_CLASSES)
     if confusion_matrix_log:
         confusion_matrix_logger = ConfusionMatrixLogger(train_data=train_data)
-
+    class_names = generate_class_list(train_data)
     with torch.no_grad():
         text_inputs = text_labels.cuda()
         logger.info(f"{config.TEST.NUM_CLIP * config.TEST.NUM_CROP} views inference")
@@ -251,6 +253,10 @@ def validate(val_loader, text_labels, model, config, train_data, epoch=0, confus
                 tot_similarity += similarity
             values_1, indices_1 = tot_similarity.topk(1, dim=-1)
             values_5, indices_5 = tot_similarity.topk(5, dim=-1)
+
+            if config.DATA.SAVE_OUTPUT_LOCATION is not None:
+                update_data(b, _image, label_id, idx, all_data, class_names, text_inputs, config, values_5, indices_5)
+
             acc1, acc5 = 0, 0
             for i in range(b):
                 if indices_1[i] == label_id[i]:
@@ -282,6 +288,10 @@ def validate(val_loader, text_labels, model, config, train_data, epoch=0, confus
         confusion_matrix_logger.generate_confusion_matrix(writer, epoch)
     metrics_logger.write_to_tensorboard(writer, epoch)
     metrics_logger.reset()
+    
+    if config.DATA.SAVE_OUTPUT_LOCATION is not None:
+        save_to_json(all_data, f'{config.DATA.SAVE_OUTPUT_LOCATION}/output_data.json')
+
     return acc1_meter.avg, acc5_meter.avg
 
 if __name__ == '__main__':
